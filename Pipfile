@@ -9,8 +9,12 @@ flask-wtf = "*"
 flask-moment = "*"
 flask-migrate = "*"
 python-dotenv = "*"
+flask-login = "*"
 
 [dev-packages]
+watchdog = "*"
+v = {version = "*", editable = true}
+faker = "*"
 
 [requires]
 python_version = "3.6"
