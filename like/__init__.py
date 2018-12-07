@@ -1,6 +1,6 @@
 # coding:utf-8
 from flask import Flask
-from like.exts import db
+from like.exts import db, bs
 import os
 from like.settings import config
 from like.models import Permission, Role, User, Post, Discussion, Topic
@@ -30,6 +30,7 @@ def register_blueprints(app):
 
 def register_exts(app):
     db.init_app(app)
+    bs.init_app(app)
 
 
 def register_shell_context(app):
