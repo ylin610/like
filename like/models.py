@@ -209,6 +209,7 @@ class Discussion(db.Model):
 class Statement(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(512), nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
 
     creator_id = db.Column(db.ForeignKey('user.id'))
     discussion_id = db.Column(db.ForeignKey('discussion.id'))

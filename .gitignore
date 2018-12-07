@@ -117,3 +117,5 @@ dmypy.json
 # dev
 *.db
 .idea
+JK.png
+faker.py

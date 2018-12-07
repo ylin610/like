@@ -12,7 +12,7 @@ else:
 class BaseConfig:
     # basic config
     SECRET_KEY = os.getenv('SECRET_KEY')
-    TEMPLATE_AUTO_RELOAD = True
+    TEMPLATES_AUTO_RELOAD = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
