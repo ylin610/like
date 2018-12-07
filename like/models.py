@@ -28,6 +28,30 @@ role_permission = db.Table('role_permission',
                            )
 
 
+user_topic = db.Table('user_topic',
+                      db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                      db.Column('topic_id', db.Integer, db.ForeignKey('topic.id'))
+                      )
+
+
+user_post_collect = db.Table('user_post_collect',
+                             db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                             db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
+                             )
+
+
+user_post_like = db.Table('user_post_like',
+                          db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                          db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
+                          )
+
+
+user_discussion = db.Table('user_discussion',
+                           db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                           db.Column('discussion_id', db.Integer, db.ForeignKey('discussion.id'))
+                           )
+
+
 class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(32))
@@ -59,6 +83,13 @@ class Role(db.Model):
                 role.permissions.append(perm)
         db.session.commit()
 
+    def add_permission(self, permission):
+        perm = Permission.query.filter_by(name=permission).first()
+        if perm in self.permissions:
+            raise ValueError(f'角色<{self.name}>已有权限<{permission}>，请勿重复添加！')
+        if perm is None:
+            db.session.add(perm)
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -68,13 +99,22 @@ class User(db.Model, UserMixin):
     email_hash = db.Column(db.String(32))
     bio = db.Column(db.String(256))
     create_time = db.Column(db.DateTime, default=datetime.now)
-
-    is_verified = db.Column(db.Boolean, default=False)
     is_banned = db.Column(db.Boolean, default=False)
 
     role_id = db.Column(db.ForeignKey('role.id'))
 
     role = db.relationship('Role', back_populates='users')
+    created_topics = db.relationship('Topic', back_populates='creator')
+    followed_topics = db.relationship('Topic', secondary=user_topic, back_populates='followers')
+    posts = db.relationship('Post', back_populates='creator')
+    collected_posts = db.relationship('Post', secondary=user_post_collect, back_populates='collectors')
+    liked_posts = db.relationship('Post', secondary=user_post_like, back_populates='liked_users')
+    comments = db.relationship('Comment', back_populates='creator')
+    created_discussions = db.relationship('Discussion', back_populates='creator')
+    discussions = db.relationship('Discussion', secondary=user_discussion, back_populates='participants')
+    statements = db.relationship('Statement', back_populates='creator')
+
+    # TODO: 添加用户关注
 
     @property
     def password(self):
@@ -83,6 +123,16 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.password_ = generate_password_hash(password)
+
+    def set_role(self, role_name):
+        role = Role.query.filter_by(name=role_name).first()
+        if role is None:
+            raise ValueError(f'角色<{role}>不存在！')
+        elif role is self.role:
+            raise ValueError(f'用户<{self.username}>已是角色<{role_name}>，请勿重复设置！')
+        else:
+            self.role = role
+            db.session.commit()
 
     def check_password(self, password):
         return check_password_hash(self.password_, password)
@@ -95,3 +145,73 @@ class User(db.Model, UserMixin):
             elif perm not in self.role.permissions:
                 return False
         return True
+
+    def is_verified(self):
+        unverified = Role.query.filter_by(name='UNVERIFIED')
+        return unverified is not self.role
+
+
+class Topic(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(32), nullable=False, unique=True)
+    description = db.Column(db.String(256))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+    creator_id = db.Column(db.ForeignKey('user.id'))
+
+    creator = db.relationship('User', back_populates='created_topics')
+    followers = db.relationship('User', secondary=user_topic, back_populates='followed_topics')
+    posts = db.relationship('Post', back_populates='topic')
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.String(512), nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+    creator_id = db.Column(db.ForeignKey('user.id'))
+    topic_id = db.Column(db.ForeignKey('topic.id'))
+
+    topic = db.relationship('Topic', back_populates='posts')
+    creator = db.relationship('User', back_populates='posts')
+    collectors = db.relationship('User', secondary=user_post_collect, back_populates='collected_posts')
+    liked_users = db.relationship('User', secondary=user_post_like, back_populates='liked_posts')
+    comments = db.relationship('Comment', back_populates='post')
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.String(512), nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+    creator_id = db.Column(db.ForeignKey('user.id'))
+    post_id = db.Column(db.ForeignKey('post.id'))
+
+    creator = db.relationship('User', back_populates='comments')
+    post = db.relationship('Post', back_populates='comments')
+
+    # TODO: 添加评论内评论
+
+
+class Discussion(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(128), nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    start_time = db.Column(db.DateTime)
+
+    creator_id = db.Column(db.ForeignKey('user.id'))
+
+    creator = db.relationship('User', back_populates='created_discussions')
+    participants = db.relationship('User', secondary=user_discussion, back_populates='discussions')
+    statements = db.relationship('Statement', back_populates='discussion')
+
+
+class Statement(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.String(512), nullable=False)
+
+    creator_id = db.Column(db.ForeignKey('user.id'))
+    discussion_id = db.Column(db.ForeignKey('discussion.id'))
+
+    creator = db.relationship('User', back_populates='statements')
+    discussion = db.relationship('Discussion', back_populates='statements')

@@ -2,7 +2,7 @@
 import unittest
 from like import create_app
 from like.exts import db
-from like.models import Permission, Role, User
+from like.models import Permission, Role, User, Topic
 
 
 class BaseTestCase(unittest.TestCase):
@@ -21,10 +21,3 @@ class BaseTestCase(unittest.TestCase):
     def tearDown(self):
         db.drop_all()
         self.context.pop()
-
-    def test_database(self):
-        perm = Permission.query.get(1)
-        roles = Role.query.all()
-        self.assertEqual('PUBLISH', perm.name)
-        self.assertEqual(3, len(roles))
-        self.assertIn(perm, roles[1].permissions)
