@@ -21,4 +21,4 @@ def index():
 
     hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id).order_by(func.count(Post.id)).limit(5)
     # hot_posts = Post.query.join(Post.liked_users).group_by(Post.id).order_by(func.count(User.id)).limit(5)
-    return render_template('front/index.html', posts=posts, hot_topics=hot_topics)
+    return render_template('front/index.html', hot_topics=hot_topics)

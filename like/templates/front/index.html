@@ -3,22 +3,6 @@
 {% block page_title %}首页{% endblock %}
 
 {% block lg_content %}
-  {% for post in posts %}
-    <div class="ui card orange">
-      <div class="content">
-        <i class="right floated like icon"></i>
-        <i class="right floated star icon"></i>
-        <div class="header">{{ post.topic.name }}</div>
-        <div class="description">
-          <p>{{ post.content }}</p>
-        </div>
-      </div>
-      <div class="extra content">
-        <span class="left floated like"><i class="like icon"></i> Like </span>
-        <span class="right floated star"><i class="star icon"></i> Favorite </span>
-      </div>
-    </div>
-  {% endfor %}
 {% endblock %}
 
 {% block sm_content %}

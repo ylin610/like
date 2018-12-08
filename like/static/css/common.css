@@ -10,6 +10,10 @@ body {
     background-color: #feffdf;
 }
 
+.fixed.menu {
+    box-shadow: 0 2px 5px rgba(255,92,34,.4)!important;
+}
+
 .page-container {}
 
 .main-actions {

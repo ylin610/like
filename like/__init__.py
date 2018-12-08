@@ -1,10 +1,10 @@
 # coding:utf-8
 from flask import Flask
-from like.exts import db, bs
+from like.exts import db, bs, csrf
 import os
 from like.settings import config
 from like.models import Permission, Role, User, Post, Discussion, Topic
-from like.blueprints import front_bp
+from like.blueprints import front_bp, api_bp
 from like.fakes import *
 import click
 
@@ -26,11 +26,13 @@ def create_app(config_type=None):
 
 def register_blueprints(app):
     app.register_blueprint(front_bp)
+    app.register_blueprint(api_bp)
 
 
 def register_exts(app):
     db.init_app(app)
     bs.init_app(app)
+    csrf.init_app(app)
 
 
 def register_shell_context(app):
