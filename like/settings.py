@@ -16,6 +16,8 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BOOTSTRAP_SERVE_LOCAL = True
 
+    POSTS_PER_PAGE = 20
+
 
 class DevelpomentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = sqlite3 + os.path.join(root_path, 'data_dev.db')

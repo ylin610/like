@@ -1,0 +1,84 @@
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    list-style: none;
+}
+
+body {
+    background-color: #feffdf;
+}
+
+.page-container {}
+
+.main-actions {
+    display: flex !important;
+    justify-content: space-around !important;
+    margin: 0 !important;
+    padding-top: 15px;
+}
+
+.action-item {
+    width: 25%;
+    display: flex!important;
+    flex-direction: column;
+    align-items: center!important;
+    cursor: pointer;
+    color: #35d0ba;
+}
+
+.action-item i {
+    display: flex!important;
+    margin: 10px!important;
+}
+
+.nav-container, .page-container {
+    min-width: 775px !important;
+    max-width: 1140px !important;
+    margin: auto !important;
+    display: flex;
+    width: 1000px;
+}
+
+.ui.menu .nav-container .item:before {
+    width: 0 !important;
+}
+
+.lg-content {
+    padding-top: 66px;
+    width: 694px !important;
+    margin-right: 10px !important;
+}
+
+.sm-content {
+    width: 296px;
+    height: 500px;
+}
+
+.sm-content .ui.card {
+    margin: 0!important;
+    margin-bottom: 10px!important;
+    width: 100%!important;
+}
+
+#topic-card .ui.label {
+    margin: 5px;
+    color: #fefed5;
+    background-color: #ff9234;
+}
+
+#topic-card .ui.label:hover {
+    background-color: #ff9234;
+}
+
+
+.placeholder {
+    display: block;
+    height: 66px;
+    width: 100%;
+}
+
+.lg-content .card {
+    width: 100%;
+}

@@ -27,7 +27,7 @@
   --gray: #777;
   --gray-dark: #333;
   --primary: #FF6F61;
-  --secondary: #aaa;
+  --secondary: #ffa952;
   --success: #22B24C;
   --info: #369;
   --warning: #F5E625;
@@ -2558,13 +2558,13 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #222;
-  background-color: #aaa;
-  border-color: #aaa;
+  background-color: #ffa952;
+  border-color: #ffa952;
 }
 
 .btn-secondary:hover {
   color: #222;
-  background-color: #979797;
+  background-color: #ffe79a;
   border-color: #919090;
 }
 
@@ -2575,8 +2575,8 @@ fieldset:disabled a.btn {
 
 .btn-secondary.disabled, .btn-secondary:disabled {
   color: #222;
-  background-color: #aaa;
-  border-color: #aaa;
+  background-color: #ffa952;
+  border-color: #ffa952;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
@@ -2845,16 +2845,16 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-secondary {
-  color: #aaa;
+  color: #ffa952;
   background-color: transparent;
   background-image: none;
-  border-color: #aaa;
+  border-color: #ffa952;
 }
 
 .btn-outline-secondary:hover {
   color: #222;
-  background-color: #aaa;
-  border-color: #aaa;
+  background-color: #ffa952;
+  border-color: #ffa952;
 }
 
 .btn-outline-secondary:focus, .btn-outline-secondary.focus {
@@ -2863,15 +2863,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
-  color: #aaa;
+  color: #ffa952;
   background-color: transparent;
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled):active, .btn-outline-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-secondary.dropdown-toggle {
   color: #222;
-  background-color: #aaa;
-  border-color: #aaa;
+  background-color: #ffa952;
+  border-color: #ffa952;
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled):active:focus, .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
@@ -5128,7 +5128,7 @@ input[type="button"].btn-block {
 
 .badge-secondary {
   color: #222;
-  background-color: #aaa;
+  background-color: #ffa952;
 }
 
 .badge-secondary[href]:hover, .badge-secondary[href]:focus {
@@ -6435,7 +6435,7 @@ button.bg-primary:focus {
 }
 
 .bg-secondary {
-  background-color: #aaa !important;
+  background-color: #ffa952 !important;
 }
 
 a.bg-secondary:hover, a.bg-secondary:focus,
@@ -6557,7 +6557,7 @@ button.bg-dark:focus {
 }
 
 .border-secondary {
-  border-color: #aaa !important;
+  border-color: #ffa952 !important;
 }
 
 .border-success {
@@ -9330,7 +9330,7 @@ a.text-primary:hover, a.text-primary:focus {
 }
 
 .text-secondary {
-  color: #aaa !important;
+  color: #ffa952 !important;
 }
 
 a.text-secondary:hover, a.text-secondary:focus {
@@ -9436,7 +9436,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
   pre,
   blockquote {
-    border: 1px solid #aaa;
+    border: 1px solid #ffa952;
     page-break-inside: avoid;
   }
   thead {

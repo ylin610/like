@@ -2,6 +2,49 @@
 
 {% block page_title %}首页{% endblock %}
 
-{% block body %}
+{% block lg_content %}
+  {% for post in posts %}
+    <div class="ui card orange">
+      <div class="content">
+        <i class="right floated like icon"></i>
+        <i class="right floated star icon"></i>
+        <div class="header">{{ post.topic.name }}</div>
+        <div class="description">
+          <p>{{ post.content }}</p>
+        </div>
+      </div>
+      <div class="extra content">
+        <span class="left floated like"><i class="like icon"></i> Like </span>
+        <span class="right floated star"><i class="star icon"></i> Favorite </span>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
 
+{% block sm_content %}
+  <div class="ui card" id="action-card">
+    <div class="content">
+      <div class="center aligned header">开始创作</div>
+      <div class="ui big horizontal list main-actions">
+        <div class="item action-item">
+              <i class="edit icon"></i>
+            <div class="item">动态</div>
+        </div>
+        <div class="item action-item">
+              <i class="comments icon"></i>
+            <div class="item">讨论</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui card" id="topic-card">
+    <div class="content">
+      <div class="center aligned header">热门话题</div>
+      <div class="description">
+        {% for topic in hot_topics %}
+          <a class="ui large label" href="#">{{ topic.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 {% endblock %}

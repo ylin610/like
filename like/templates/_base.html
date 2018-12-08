@@ -1,4 +1,3 @@
-{% from 'bootstrap/nav.html' import render_nav_item %}
 {% from 'bootstrap/utils.html' import render_static %}
 
 <!DOCTYPE html>
@@ -7,53 +6,48 @@
   <meta charset="UTF-8">
   {% block title %}<title>{% block page_title %}{% endblock %} - 立刻 Like</title>{% endblock %}
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  {{ render_static('css', 'css/bootstrap.css') }}
-  {{ render_static('css', 'css/style.css') }}
+  {{ render_static('css', 'semantic-ui/semantic.css') }}
+  {{ render_static('css', 'css/common.css') }}
   {% block head %}
   {% endblock %}
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 895.12 895.12"><defs><style>.cls-1{fill:#ff6f61;}.cls-2{fill:#7acfdf;}.cls-3{fill:#fcf2cb;}</style></defs><title>like</title><g id="background"><rect class="cls-1" width="895.12" height="895.12" rx="194.25" ry="194.25"/></g><g id="logo"><path class="cls-2" d="M731.73,788.32l-42,42H479.58a125,125,0,0,1-125-125V209.61l42-42,38.79,545.32a49,49,0,0,0,49,49Z" transform="translate(-64.21 -63.87)"/><path class="cls-3" d="M731.73,694v94.32H521.58a125,125,0,0,1-125-125V167.61H494V644a50,50,0,0,0,50,50Z" transform="translate(-64.21 -63.87)"/></g></svg>
-      </a>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-          {{ render_nav_item('front.index', '首页') }}
-          {{ render_nav_item('front.index', '发现') }}
-          {{ render_nav_item('front.index', '话题') }}
-        </ul>
-        <form class="form-inline my-lg-0">
-          <div class="form-group">
-            <div class="input-group mb-3 search-bar">
-              <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-              <div class="input-group-append">
-                <button class="btn btn-secondary" type="button">搜索</button>
-              </div>
-            </div>
-          </div>
-        </form>
-        <div class="navbar-nav">
-          {{ render_nav_item('front.index', '注册') }}
-        </div>
-      </div>
+<div class="ui orange inverted large top fixed menu">
+  <div class="nav-container">
+  <div class="item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 895.12 895.12" style="height: 28px;width: 28px"><defs><style>.cls-1{fill:#F2711C;}.cls-2{fill:#7acfdf;}.cls-3{fill:#fcf2cb;}</style></defs><title>like</title><g id="background"><rect class="cls-1" width="895.12" height="895.12" rx="194.25" ry="194.25"/></g><g id="logo"><path class="cls-2" d="M731.73,788.32l-42,42H479.58a125,125,0,0,1-125-125V209.61l42-42,38.79,545.32a49,49,0,0,0,49,49Z" transform="translate(-64.21 -63.87)"/><path class="cls-3" d="M731.73,694v94.32H521.58a125,125,0,0,1-125-125V167.61H494V644a50,50,0,0,0,50,50Z" transform="translate(-64.21 -63.87)"/></g></svg>
+  </div>
+  <a class="item">首页</a>
+  <a class="item">发现</a>
+    <div class="item">
+    <div class="ui icon input" style="width: 500px;">
+      <input type="text" placeholder="请输入关键字">
+      <i class="search link icon"></i>
     </div>
-  </nav>
-  <div class="container main-content">
-    <div class="row">
-      <div class="lg-content col-md-9">
-        {% block lg_content %}
-        {% endblock %}
-      </div>
-      <div class="sm-content col-md-3">
-        {% block sm_content %}
-        {% endblock %}
-      </div>
+  </div>
+    <div class="right menu">
+  <a class="item">注册</a>
+  <a class="item">登录</a>
+    </div>
+  </div>
+</div>
+  <div class="page-container">
+    <div class="lg-content" id="lg-content">
+      {% block lg_content %}
+      {% endblock %}
+    </div>
+    <div class="sm-content rail">
+    <div class="ui sticky">
+    <div class="placeholder"></div>
+      {% block sm_content %}
+      {% endblock %}
+    </div>
     </div>
   </div>
 </body>
 {% block scripts %}
-  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  {{ render_static('js', 'js/jquery.min.js') }}
+  {{ render_static('js', 'semantic-ui/semantic.min.js') }}
+  {{ render_static('js', 'js/common.js') }}
 {% endblock %}
 </html>
