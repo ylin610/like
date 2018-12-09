@@ -1,16 +1,17 @@
 {% for post in posts %}
   <div class="ui card orange">
     <div class="content">
-      <i class="right floated like icon"></i>
-      <i class="right floated star icon"></i>
+      <div class="right floated meta">{{ moment(post.create_time).fromNow() }}</div>
       <div class="header">{{ post.topic.name }}</div>
       <div class="description">
         <p>{{ post.content }}</p>
       </div>
     </div>
-    <div class="extra content">
-      <span class="left floated like"><i class="like icon"></i> Like </span>
-      <span class="right floated star"><i class="star icon"></i> Favorite </span>
+    <div class="extra content post-actions">
+      <span class="left floated like"><i class="like icon"></i>赞</span>
+      <span class="left floated star"><i class="star icon"></i>收藏</span>
+      <span class="left floated star"><i class="comment icon"></i>{{ post.comments|length }}条评论</span>
+      <div class="right floated author">{{ post.creator.username }}</div>
     </div>
   </div>
 {% endfor %}

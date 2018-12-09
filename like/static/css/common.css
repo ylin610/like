@@ -55,6 +55,23 @@ body {
     margin-right: 10px !important;
 }
 
+.lg-content .card {
+    width: 100%;
+}
+
+.lg-content .card .content {
+    font-size: 1.1em!important;
+}
+
+.post-actions i {
+    padding-right: 2px;
+}
+
+.post-actions span {
+    padding-right: 15px;
+    cursor: pointer;
+}
+
 .sm-content {
     width: 296px;
     height: 500px;
@@ -80,9 +97,5 @@ body {
 .placeholder {
     display: block;
     height: 66px;
-    width: 100%;
-}
-
-.lg-content .card {
     width: 100%;
 }

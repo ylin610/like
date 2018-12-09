@@ -7,30 +7,52 @@ $(document).ready(function () {
         }
     });
 
-    $('.ui.sticky')
-        .sticky({
-            context: '#lg-content'
-        })
-    ;
+    moment.locale("zh-cn");
 
-    var url = '/api/v1/post';
+    function flask_moment_render(elem) {
+        $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+        $(elem).removeClass('flask-moment').show();
+    }
+
+    function flask_moment_render_all() {
+        $('.flask-moment').each(function () {
+            flask_moment_render(this);
+            if ($(this).data('refresh')) {
+                (function (elem, interval) {
+                    setInterval(function () {
+                        flask_moment_render(elem)
+                    }, interval);
+                })(this, $(this).data('refresh'));
+            }
+        })
+    }
+
+    $('.ui.sticky').sticky({
+        context: "#lg-content"
+    });
+
+    var url = "/api/v1/post";
     var page = 2;
-    var loadPost = function (page=page) {
+    function loadPost(page=page) {
         $.ajax({
                 url: url,
-                type: 'GET',
+                type: "GET",
                 data: {
                     page: page
                 },
                 success: function (data) {
                     $("#lg-content").append(data);
+                    flask_moment_render_all();
+                    $('.ui.sticky').sticky({
+                        context: "#lg-content"
+                    });
                     page += 1;
                 },
-                error: function (e) {
-                }
             });
-    };
+    }
+
     loadPost(1);
+
 
     $(window).scroll(function () {
         if ($(window).scrollTop() + $(window).height() === $(document).height()) {
