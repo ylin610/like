@@ -4,12 +4,13 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
 from flask_login import LoginManager
-
+from flask_mail import Mail
 db = SQLAlchemy()
 bs = Bootstrap()
 csrf = CSRFProtect()
 moment = Moment()
 login = LoginManager()
+mail = Mail()
 
 
 @login.user_loader

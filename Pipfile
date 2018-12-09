@@ -11,6 +11,8 @@ flask-migrate = "*"
 python-dotenv = "*"
 flask-login = "*"
 bootstrap-flask = "*"
+python-memcached = "*"
+flask-mail = "*"
 
 [dev-packages]
 watchdog = "*"

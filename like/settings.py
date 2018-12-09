@@ -16,6 +16,17 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BOOTSTRAP_SERVE_LOCAL = True
 
+    # Flask-Mail
+    # 邮箱   TLS     SSL
+    # QQ    587     465
+    # 163   994     465
+    MAIL_SERVER = 'smtp.163.com'
+    MAIL_PORT = '465'
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = MAIL_USERNAME
+
     POSTS_PER_PAGE = 20
 
 

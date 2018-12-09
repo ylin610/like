@@ -34,17 +34,25 @@
           </div>
           <div class="field">
             {{ form.captcha.label }}
+            <div class="ui action input">
             {{ form.captcha }}
+            <button class="ui button" id="get-captcha">获取验证码</button>
+            </div>
           </div>
           <div class="field">
             {{ form.submit(class='fluid ui button') }}
           </div>
         </form>
       </div>
+      <br>
+      <div class="item">
+        <a href="{{ url_for('auth.login') }}">已有账号？立刻登录！</a>
+      </div>
     </div>
   </div>
 {% endblock %}
 
-{% block script %}
-  {{ render_static('js', '/js/auth.js') }}
+{% block scripts %}
+  {{ render_static('js', 'js/jquery.min.js') }}
+  {{ render_static('js', 'js/auth.js') }}
 {% endblock %}
