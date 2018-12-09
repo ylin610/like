@@ -1,0 +1,14 @@
+body {
+    background-color: #ff9234;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.ui.card {
+    border: none!important;
+    background-color: #ffcd3c!important;
+    width: 30%;
+    margin-top: 100px!important;
+}

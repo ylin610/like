@@ -72,6 +72,10 @@ body {
     cursor: pointer;
 }
 
+.hot-comment {
+    font-size: 1em!important;
+}
+
 .sm-content {
     width: 296px;
     height: 500px;
