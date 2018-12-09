@@ -17,3 +17,5 @@ def load_user(user_id):
     from like.models import User
     user = User.query.get(int(user_id))
     return user
+
+login.login_view = 'auth.login'

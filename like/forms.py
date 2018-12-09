@@ -13,3 +13,10 @@ class SignUpForm(FlaskForm):
     captcha = StringField('验证码', validators=[DataRequired('请输入验证码'),
                                              Regexp(r'^\d{6}$', message='验证码格式不正确')])
     submit = SubmitField('提交')
+
+
+class LoginForm(FlaskForm):
+    email = StringField('邮箱', validators=[Email('请输入正确格式的邮箱'),
+                                          DataRequired('请输入邮箱')])
+    password = PasswordField('密码', validators=[DataRequired('密码不能为空')])
+    submit = SubmitField('登录')
