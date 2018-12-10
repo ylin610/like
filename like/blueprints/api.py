@@ -3,7 +3,8 @@ from flask import (
     Blueprint,
     render_template,
     current_app,
-    request
+    request,
+    jsonify
     )
 from like.models import Post, Topic, Comment, User
 from sqlalchemy.sql.expression import func
@@ -19,5 +20,19 @@ def get_post():
     query_obj = Post.query
     if topic:
         query_obj = query_obj.filter_by(topic_id=topic)
-    posts = query_obj.order_by(Post.create_time.desc()).paginate(page, num).items
-    return render_template('api/post.html', posts=posts)
+    query = query_obj.order_by(Post.create_time.desc()).paginate(page, num)
+    html = render_template('api/post.html', posts=query.items)
+    res = {'html': html, 'has_next': query.has_next}
+    return jsonify(res)
+
+
+@api_bp.route('/comment')
+def get_comment():
+    post = request.args.get('post_id', type=int)
+    page = request.args.get('page', 1, type=int)
+    num = request.args.get('num', current_app.config['COMMENTS_PER_PAGE'], type=int)
+    query = Comment.query.filter_by(post_id=post) \
+        .order_by(Comment.create_time.desc()).paginate(page, num)
+    html = render_template('api/comment.html', comments=query.items)
+    res = {'html': html, 'has_next': query.has_next}
+    return jsonify(res)

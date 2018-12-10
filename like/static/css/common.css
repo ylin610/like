@@ -72,9 +72,16 @@ body {
     cursor: pointer;
 }
 
-.hot-comment {
+.lg-content .ui.card p {
     font-size: 1em!important;
+    font-weight: bolder;
+    color: rgba(0,0,0,0.8)!important;
 }
+
+.lg-content .header {
+    color: #35d0ba!important;
+}
+
 
 .sm-content {
     width: 296px;

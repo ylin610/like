@@ -4,7 +4,9 @@
       <div class="right floated meta">{{ moment(post.create_time).fromNow() }}</div>
       <div class="header">#{{ post.topic.name }}</div>
       <div class="description">
-        <p>{{ post.content }}</p>
+        <a href="{{ url_for('front.post', post_id=post.id) }}">
+          <p>{{ post.content }}</p>
+        </a>
       </div>
     </div>
     <div class="extra content post-actions">
@@ -13,11 +15,13 @@
       <span class="left floated star"><i class="comment icon"></i>{{ post.comments|length }}条评论</span>
       <div class="right floated author">{{ post.creator.username }}</div>
     </div>
-      {% if post.comments|length > 0 %}
-    <div class="extra content hot-comment" data-post-id="{{ post.id }}">
-      <p>热门评论</p>
-      <p>{{ post.comments[0].creator.username }}：{{ post.comments[0].content }}</p>
-    </div>
-      {% endif %}
+    {% if post.comments|length > 0 %}
+      <div class="extra content hot-comment" data-post-id="{{ post.id }}">
+        <a href="{{ url_for('front.post', post_id=post.id, _anchor='comments') }}">
+          <p class="header">热门评论</p>
+          <p>{{ post.comments[0].creator.username }}：{{ post.comments[0].content }}</p>
+        </a>
+      </div>
+    {% endif %}
   </div>
 {% endfor %}

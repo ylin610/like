@@ -27,36 +27,43 @@ $(document).ready(function () {
         })
     }
 
-    $('.ui.sticky').sticky({
-        context: "#lg-content"
-    });
+    function stick() {
 
-    var url = "/api/v1/post";
-    var page = 2;
-    function loadPost(page=page) {
+    }
+
+    var url = {
+        post: "/api/v1/post",
+        comment: "/api/v1/comment",
+    };
+    var next_page = 1;
+    var hasNext = true;
+    function loadPost(page) {
         $.ajax({
-                url: url,
+                url: url[content_type],
                 type: "GET",
                 data: {
-                    page: page
+                    page: page,
+                    topic: topic,
+                    post_id: post_id
                 },
                 success: function (data) {
-                    $("#lg-content").append(data);
+                    $("#stream").append(data['html']);
                     flask_moment_render_all();
-                    $('.ui.sticky').sticky({
-                        context: "#lg-content"
-                    });
-                    page += 1;
+                    stick();
+                    next_page += 1;
+                    hasNext = data['has_next'];
                 },
             });
     }
 
-    loadPost(1);
+    loadPost(next_page);
 
 
     $(window).scroll(function () {
         if ($(window).scrollTop() + $(window).height() === $(document).height()) {
-            loadPost(page);
+            if(hasNext) {
+                loadPost(next_page);
+            }
         }
     });
 });

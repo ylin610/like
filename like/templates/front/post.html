@@ -1,0 +1,52 @@
+{% extends 'front/_base_front.html' %}
+
+{% block page_title %}{{ post.topic.name }}{% endblock %}
+
+{% block lg_content %}
+  <div class="ui card">
+    <div class="content">
+      <div class="header">{{ post.creator.username }} #
+        <a href="#">{{ post.topic.name }}</a>
+      </div>
+      <div class="meta">{{ moment(post.create_time).fromNow() }}</div>
+      <div class="description">{{ post.content }}</div>
+    </div>
+    <div class="extra content post-actions">
+      <span class="left floated like"><i class="like icon"></i>赞</span>
+      <span class="left floated star"><i class="star icon"></i>收藏</span>
+    </div>
+  </div>
+  <div class="ui card post-comments">
+    <div class="dividing content">
+      <div class="header">热门评论</div>
+      <div class="ui comments">
+        <div class="comment">
+          <div class="content">
+            <a href="#" class="author">{{ post.comments[0].creator.username }}</a>
+            <div class="metadata">
+              <span class="date">{{ moment(post.comments[0].create_time).fromNow() }}</span>
+            </div>
+            <div class="text">{{ post.comments[0].content }}</div>
+            <div class="actions">
+              <a href="#" class="reply">reply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="header">所有评论</div>
+      <div class="ui comments" id="stream">
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+      var content_type = "comment";
+      var topic = null;
+      var post_id = {{ post.id|int }};
+  </script>
+{% endblock %}

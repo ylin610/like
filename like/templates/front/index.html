@@ -3,6 +3,7 @@
 {% block page_title %}首页{% endblock %}
 
 {% block lg_content %}
+  <div id="stream"></div>
 {% endblock %}
 
 {% block sm_content %}
@@ -39,4 +40,13 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+      var content_type = "post";
+      var topic = null;
+      var post_id = null;
+  </script>
 {% endblock %}

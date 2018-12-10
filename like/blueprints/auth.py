@@ -20,7 +20,6 @@ def sign_up():
         username = form.username.data
         email = form.email.data
         password = form.password.data
-        captcha = form.captcha.data
         user = User(username=username, email=email)
         user.password = password
         user.set_role('UNVERIFIED')
@@ -29,7 +28,6 @@ def sign_up():
         login_user(user)
         return redirect(url_for('front.index'))
     else:
-        print(form.errors)
         return render_template('auth/signup.html', form=form)
 
 

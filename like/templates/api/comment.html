@@ -1,0 +1,14 @@
+{% for comment in comments %}
+  <div class="comment">
+    <div class="content">
+      <a href="#" class="author">{{ comment.creator.username }}</a>
+      <div class="metadata">
+        <span class="date">{{ moment(comment.create_time).fromNow() }}</span>
+      </div>
+      <div class="text">{{ comment.content }}</div>
+      <div class="actions">
+        <a href="#" class="reply">reply</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}

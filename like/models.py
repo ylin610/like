@@ -16,7 +16,7 @@ permissions = [
 
 
 permission_map = {
-    'UNVERIFIED': ['PUBLISH', 'FOLLOW', 'COLLECT'],
+    'UNVERIFIED': ['FOLLOW', 'COLLECT'],
     'USER': ['PUBLISH', 'FOLLOW', 'COLLECT', 'COMMENT', 'DISCUSSION'],
     'ADMIN': ['PUBLISH', 'FOLLOW', 'COLLECT', 'COMMENT', 'DISCUSSION', 'ADMIN']
 }

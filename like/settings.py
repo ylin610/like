@@ -28,6 +28,7 @@ class BaseConfig:
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
     POSTS_PER_PAGE = 20
+    COMMENTS_PER_PAGE = 6
 
 
 class DevelpomentConfig(BaseConfig):
