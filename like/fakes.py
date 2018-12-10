@@ -57,7 +57,8 @@ def fake_comments(count=500):
     for _ in range(count):
         comment = Comment(content=''.join(fake.sentences(nb=random.randint(1, 3))),
                           creator=random.choice(users),
-                          post=random.choice(posts)
+                          post=random.choice(posts),
+                          liked_users=random.sample(users, k=random.randint(1,20))
                           )
         comment.create_time = fake.date_time_this_year(after_now=comment.create_time)
         db.session.add(comment)

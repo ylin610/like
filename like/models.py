@@ -52,11 +52,19 @@ user_discussion = db.Table('user_discussion',
                            )
 
 
+user_comment_like = db.Table('user_comment_like',
+                             db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                             db.Column('comment_id', db.Integer, db.ForeignKey('comment.id'))
+                             )
+
+
 class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(32))
 
-    roles = db.relationship('Role', secondary=role_permission, back_populates='permissions')
+    roles = db.relationship('Role',
+                            secondary=role_permission,
+                            back_populates='permissions')
 
     @staticmethod
     def init_permission():
@@ -71,7 +79,9 @@ class Role(db.Model):
     name = db.Column(db.String(32))
 
     users = db.relationship('User', back_populates='role')
-    permissions = db.relationship('Permission', secondary=role_permission, back_populates='roles')
+    permissions = db.relationship('Permission',
+                                  secondary=role_permission,
+                                  back_populates='roles')
 
     @staticmethod
     def init_role():
@@ -105,11 +115,20 @@ class User(db.Model, UserMixin):
 
     role = db.relationship('Role', back_populates='users')
     created_topics = db.relationship('Topic', back_populates='creator')
-    followed_topics = db.relationship('Topic', secondary=user_topic, back_populates='followers')
+    followed_topics = db.relationship('Topic',
+                                      secondary=user_topic,
+                                      back_populates='followers')
     posts = db.relationship('Post', back_populates='creator')
-    collected_posts = db.relationship('Post', secondary=user_post_collect, back_populates='collectors')
-    liked_posts = db.relationship('Post', secondary=user_post_like, back_populates='liked_users')
+    collected_posts = db.relationship('Post',
+                                      secondary=user_post_collect,
+                                      back_populates='collectors')
+    liked_posts = db.relationship('Post',
+                                  secondary=user_post_like,
+                                  back_populates='liked_users')
     comments = db.relationship('Comment', back_populates='creator')
+    liked_comments = db.relationship('Comment',
+                                     secondary=user_comment_like,
+                                     back_populates='liked_users')
     created_discussions = db.relationship('Discussion', back_populates='creator')
     discussions = db.relationship('Discussion', secondary=user_discussion, back_populates='participants')
     statements = db.relationship('Statement', back_populates='creator')
@@ -160,7 +179,9 @@ class Topic(db.Model):
     creator_id = db.Column(db.ForeignKey('user.id'))
 
     creator = db.relationship('User', back_populates='created_topics')
-    followers = db.relationship('User', secondary=user_topic, back_populates='followed_topics')
+    followers = db.relationship('User',
+                                secondary=user_topic,
+                                back_populates='followed_topics')
     posts = db.relationship('Post', back_populates='topic')
 
 
@@ -174,8 +195,12 @@ class Post(db.Model):
 
     topic = db.relationship('Topic', back_populates='posts')
     creator = db.relationship('User', back_populates='posts')
-    collectors = db.relationship('User', secondary=user_post_collect, back_populates='collected_posts')
-    liked_users = db.relationship('User', secondary=user_post_like, back_populates='liked_posts')
+    collectors = db.relationship('User',
+                                 secondary=user_post_collect,
+                                 back_populates='collected_posts')
+    liked_users = db.relationship('User',
+                                  secondary=user_post_like,
+                                  back_populates='liked_posts')
     comments = db.relationship('Comment', back_populates='post')
 
 
@@ -189,6 +214,9 @@ class Comment(db.Model):
 
     creator = db.relationship('User', back_populates='comments')
     post = db.relationship('Post', back_populates='comments')
+    liked_users = db.relationship('User',
+                                  secondary=user_comment_like,
+                                  back_populates='liked_comments')
 
     # TODO: 添加评论内评论
 
@@ -202,7 +230,9 @@ class Discussion(db.Model):
     creator_id = db.Column(db.ForeignKey('user.id'))
 
     creator = db.relationship('User', back_populates='created_discussions')
-    participants = db.relationship('User', secondary=user_discussion, back_populates='discussions')
+    participants = db.relationship('User',
+                                   secondary=user_discussion,
+                                   back_populates='discussions')
     statements = db.relationship('Statement', back_populates='discussion')
 
 
