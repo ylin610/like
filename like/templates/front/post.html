@@ -20,13 +20,14 @@
     <div class="dividing content">
       <div class="header">热门评论</div>
       <div class="ui comments">
+        {% set comment = post.get_hot_comments() %}
         <div class="comment">
           <div class="content">
-            <a href="#" class="author">{{ post.comments[0].creator.username }}</a>
+            <a href="#" class="author">{{ comment.creator.username }}</a>
             <div class="metadata">
-              <span class="date">{{ moment(post.comments[0].create_time).fromNow() }}</span>
+              <span class="date">{{ moment(comment.create_time).fromNow() }}</span>
             </div>
-            <div class="text">{{ post.comments[0].content }}</div>
+            <div class="text">{{ comment.content }}</div>
             <div class="actions">
               <a href="#" class="reply">reply</a>
             </div>

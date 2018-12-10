@@ -3,7 +3,7 @@ from flask import Flask
 from like.exts import db, bs, csrf, moment, login, mail
 import os
 from like.settings import config
-from like.models import Permission, Role, User, Post, Discussion, Topic
+from like.models import Permission, Role, User, Post, Discussion, Topic, Comment
 from like.blueprints import front_bp, api_bp, auth_bp
 from like.fakes import *
 import click
@@ -48,7 +48,8 @@ def register_shell_context(app):
                     User=User,
                     Discussion=Discussion,
                     Topic=Topic,
-                    Post=Post)
+                    Post=Post,
+                    Comment=Comment)
 
 
 def register_commands(app):

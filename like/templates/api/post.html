@@ -19,7 +19,9 @@
       <div class="extra content hot-comment" data-post-id="{{ post.id }}">
         <a href="{{ url_for('front.post', post_id=post.id, _anchor='post-comments') }}">
           <p class="header">热门评论</p>
-          <p>{{ post.comments[0].creator.username }}：{{ post.comments[0].content }}</p>
+          {% set comment = post.get_hot_comments() %}
+          <div class="right floated meta">{{ comment.liked_users|length }}人赞了该评论</div>
+          <p>{{ comment.creator.username }}：{{ comment.content }}</p>
         </a>
       </div>
     {% endif %}

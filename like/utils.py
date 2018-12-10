@@ -17,6 +17,21 @@ def generate_captcha(num=6, use_letter=False):
     return ''.join(random.sample(sample, num))
 
 
+def get_max(q, num=1, key=None):
+    """get a number of max items from an iterable.
+
+    :param q (iterable): the sample.
+    :param num (int): the number of items to get.
+    :param key (function): a specific function to order the iterable.
+    :return (obj or list): a result item when param num is 1,
+        or a list of result items.
+    """
+    if num == 1:
+        return max(q, key=key)
+    else:
+        return sorted(q, key=key)[0:num]
+
+
 class Restful(object):
     ok = 200
     unautherror = 401

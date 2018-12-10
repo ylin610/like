@@ -3,6 +3,7 @@ from like.exts import db
 from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from like.utils import get_max
 
 
 permissions = [
@@ -184,6 +185,9 @@ class Topic(db.Model):
                                 back_populates='followed_topics')
     posts = db.relationship('Post', back_populates='topic')
 
+    def get_hot_posts(self, num=5):
+        return get_max(self.posts, num=num, key=lambda x: len(x.liked_users))
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -202,6 +206,9 @@ class Post(db.Model):
                                   secondary=user_post_like,
                                   back_populates='liked_posts')
     comments = db.relationship('Comment', back_populates='post')
+
+    def get_hot_comments(self, num=1):
+        return get_max(self.comments, num=num, key=lambda x: len(x.liked_users))
 
 
 class Comment(db.Model):
