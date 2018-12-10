@@ -21,7 +21,7 @@
       <div class="header">热门评论</div>
       <div class="ui comments">
         {% set comment = post.get_hot_comments() %}
-        <div class="comment">
+        <div class="comment" data-id="{{ comment.id }}">
           <div class="content">
             <a href="#" class="author">{{ comment.creator.username }}</a>
             <div class="metadata">
@@ -29,7 +29,15 @@
             </div>
             <div class="text">{{ comment.content }}</div>
             <div class="actions">
-              <a href="#" class="reply">reply</a>
+              <span class="like-comment to-bind">
+                {% if comment in current_user.liked_comments %}
+                  <i class="heart icon orange"></i>
+                {% else %}
+                  <i class="heart icon"></i>
+                {% endif %}
+                <span class="count">{{ comment.liked_users|length }}</span>
+              </span>
+              <span><i class="comment icon"></i></span>
             </div>
           </div>
         </div>
@@ -46,10 +54,12 @@
 {% block sm_content %}
   <div class="ui relaxed list">
     <div class="item">
-      <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ post.topic.name }}下发表动态</button>
+      <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ post.topic.name }}下发表动态
+      </button>
     </div>
     <div class="item">
-      <button class="ui button yellow fluid large labeled icon"><i class="hashtag icon"></i>查看#{{ post.topic.name }}的所有动态</button>
+      <button class="ui button yellow fluid large labeled icon"><i class="hashtag icon"></i>查看#{{ post.topic.name }}的所有动态
+      </button>
     </div>
   </div>
 {% endblock %}

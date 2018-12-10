@@ -3,11 +3,11 @@ from flask import (
     Blueprint,
     render_template,
     current_app,
-    request,
-    jsonify
+    request
     )
 from like.models import Post, Topic, Comment, User
 from sqlalchemy.sql.expression import func
+from like.utils import Restful
 
 
 api_bp = Blueprint('api', __name__, url_prefix='/api/v1')
@@ -23,7 +23,7 @@ def get_post():
     query = query_obj.order_by(Post.create_time.desc()).paginate(page, num)
     html = render_template('api/post.html', posts=query.items)
     res = {'html': html, 'has_next': query.has_next}
-    return jsonify(res)
+    return Restful.success(data=res)
 
 
 @api_bp.route('/comment')
@@ -35,4 +35,4 @@ def get_comment():
         .order_by(Comment.create_time.desc()).paginate(page, num)
     html = render_template('api/comment.html', comments=query.items)
     res = {'html': html, 'has_next': query.has_next}
-    return jsonify(res)
+    return Restful.success(data=res)

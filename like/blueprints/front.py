@@ -6,7 +6,10 @@ from flask import (
     request
     )
 from like.models import Post, Topic, Comment, User
+from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
+from like.exts import db
+from like.utils import Restful
 
 
 front_bp = Blueprint('front', __name__)
@@ -28,3 +31,20 @@ def index():
 def post(post_id):
     post = Post.query.get(post_id)
     return render_template('front/post.html', post=post)
+
+
+@front_bp.route('/comment/like')
+def like_comment():
+    if current_user.is_authenticated:
+        comment_id = request.args.get('comment_id', type=int)
+        comment = Comment.query.get(comment_id)
+        if comment in current_user.liked_comments:
+            current_user.liked_comments.remove(comment)
+            db.session.commit()
+            return Restful.success('取消成功')
+        else:
+            current_user.liked_comments.append(comment)
+            db.session.commit()
+            return Restful.success('点赞成功')
+    else:
+        return Restful.unauth_error()

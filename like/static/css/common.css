@@ -12,6 +12,7 @@ body {
 
 .fixed.menu {
     box-shadow: 0 2px 5px rgba(255,92,34,.4)!important;
+    z-index: 999!important;
 }
 
 .page-container {}
@@ -72,7 +73,7 @@ body {
     cursor: pointer;
 }
 
-.lg-content .ui.card p {
+.lg-content .ui.card p, .description {
     font-size: 1em!important;
     font-weight: bolder;
     color: rgba(0,0,0,0.8)!important;
@@ -82,7 +83,16 @@ body {
     color: #35d0ba!important;
 }
 
+.actions span {
+    color: rgba(0,0,0,0.4);
+    cursor: pointer;
+    margin-right: 10px;
+}
 
+
+.actions span:hover {
+    color: rgba(0,0,0,0.6);
+}
 .sm-content {
     width: 296px;
     height: 500px;

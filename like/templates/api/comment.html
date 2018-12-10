@@ -1,5 +1,5 @@
 {% for comment in comments %}
-  <div class="comment">
+  <div class="comment" data-id="{{ comment.id }}">
     <div class="content">
       <a href="#" class="author">{{ comment.creator.username }}</a>
       <div class="metadata">
@@ -7,7 +7,15 @@
       </div>
       <div class="text">{{ comment.content }}</div>
       <div class="actions">
-        <a href="#" class="reply">reply</a>
+        <span class="like-comment to-bind">
+          {% if comment in current_user.liked_comments %}
+          <i class="heart icon orange"></i>
+          {% else %}
+          <i class="heart icon"></i>
+          {% endif %}
+          <span class="count">{{ comment.liked_users|length }}</span>
+        </span>
+        <span><i class="comment icon"></i></span>
       </div>
     </div>
   </div>
