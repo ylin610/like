@@ -23,10 +23,12 @@ def get_max(q, num=1, key=None):
     :param q (iterable): the sample.
     :param num (int): the number of items to get.
     :param key (function): a specific function to order the iterable.
-    :return (obj or list): a result item when param num is 1,
-        or a list of result items.
+    :return (obj or list or None): a result item when param num is 1,
+        or a list of result items. Return None if q is empty.
     """
-    if num == 1:
+    if len(q) == 0:
+        return None
+    elif num == 1:
         return max(q, key=key)
     else:
         return sorted(q, key=key)[0:num]

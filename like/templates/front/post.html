@@ -21,6 +21,8 @@
       <div class="header">热门评论</div>
       <div class="ui comments">
         {% set comment = post.get_hot_comments() %}
+          {% if comment is none %}
+          {% else %}
         <div class="comment" data-id="{{ comment.id }}">
           <div class="content">
             <a href="#" class="author">{{ comment.creator.username }}</a>
@@ -41,6 +43,7 @@
             </div>
           </div>
         </div>
+      {% endif %}
       </div>
     </div>
     <div class="content">
