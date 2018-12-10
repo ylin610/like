@@ -16,7 +16,7 @@
       <span class="left floated star"><i class="star icon"></i>收藏</span>
     </div>
   </div>
-  <div class="ui card post-comments">
+  <div class="ui card" id="post-comments">
     <div class="dividing content">
       <div class="header">热门评论</div>
       <div class="ui comments">
@@ -38,6 +38,17 @@
       <div class="header">所有评论</div>
       <div class="ui comments" id="stream">
       </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block sm_content %}
+  <div class="ui relaxed list">
+    <div class="item">
+      <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ post.topic.name }}下发表动态</button>
+    </div>
+    <div class="item">
+      <button class="ui button yellow fluid large labeled icon"><i class="hashtag icon"></i>查看#{{ post.topic.name }}的所有动态</button>
     </div>
   </div>
 {% endblock %}

@@ -28,7 +28,9 @@ $(document).ready(function () {
     }
 
     function stick() {
-
+        $('.ui.sticky').sticky({
+            context: '#lg-content'
+        });
     }
 
     var url = {

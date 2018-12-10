@@ -17,7 +17,7 @@
     </div>
     {% if post.comments|length > 0 %}
       <div class="extra content hot-comment" data-post-id="{{ post.id }}">
-        <a href="{{ url_for('front.post', post_id=post.id, _anchor='comments') }}">
+        <a href="{{ url_for('front.post', post_id=post.id, _anchor='post-comments') }}">
           <p class="header">热门评论</p>
           <p>{{ post.comments[0].creator.username }}：{{ post.comments[0].content }}</p>
         </a>
