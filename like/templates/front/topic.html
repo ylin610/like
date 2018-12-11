@@ -1,0 +1,46 @@
+{% extends 'front/_base_front.html' %}
+
+{% block page_title %}{{ topic.name }}{% endblock %}
+
+{% block lg_content %}
+  <div class="ui card">
+    <div class="content">
+      <div class="header">
+        <h2>#{{ topic.name }}</h2>
+      </div>
+      <div class="meta">创建者：{{ topic.creator.username }}</div>
+      <div class="description">{{ topic.description }}</div>
+    </div>
+    <div class="extra content actions">
+        <span class="left floated like-topic" data-id="{{ topic.id }}">
+          {% if current_user in topic.followers %}
+            <i class="like icon orange"></i>
+          {% else %}
+            <i class="like icon"></i>
+          {% endif %}
+          <span class="count">
+          {{ topic.followers|length }}
+          </span>
+        </span>
+    </div>
+  </div>
+  <div id="stream"></div>
+{% endblock %}
+
+{% block sm_content %}
+  <div class="ui relaxed list">
+    <div class="item">
+      <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ topic.name }}下发表动态
+      </button>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+      var content_type = "post";
+      var topic_id = {{ topic.id }};
+      var post_id = null;
+  </script>
+{% endblock %}

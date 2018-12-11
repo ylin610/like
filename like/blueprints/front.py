@@ -33,6 +33,12 @@ def post(post_id):
     return render_template('front/post.html', post=post)
 
 
+@front_bp.route('/topic/<int:topic_id>')
+def topic(topic_id):
+    topic = Topic.query.get(topic_id)
+    return render_template('front/topic.html', topic=topic)
+
+
 @front_bp.route('/comment/like')
 def like_comment():
     if current_user.is_authenticated:

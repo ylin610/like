@@ -100,7 +100,6 @@ $(document).ready(function () {
                 comment_id: commentId
             },
             success: function (data) {
-                console.log(data);
                 switch (data["code"]) {
                     case 401:
                         window.location = "/login";

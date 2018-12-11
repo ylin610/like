@@ -6,7 +6,9 @@
   <div class="ui card">
     <div class="content">
       <div class="header">{{ post.creator.username }} #
-        <a href="#">{{ post.topic.name }}</a>
+        <a href="{{ url_for('front.topic', topic_id=(post.topic.id)) }}">
+          {{ post.topic.name }}
+        </a>
       </div>
       <div class="meta">{{ moment(post.create_time).fromNow() }}</div>
       <div class="description">{{ post.content }}</div>
@@ -79,8 +81,10 @@
       </button>
     </div>
     <div class="item">
+      <a href="{{ url_for('front.topic', topic_id=(post.topic.id)) }}">
       <button class="ui button yellow fluid large labeled icon"><i class="hashtag icon"></i>查看#{{ post.topic.name }}的所有动态
       </button>
+      </a>
     </div>
   </div>
 {% endblock %}

@@ -1,22 +1,5 @@
+{% from '_macros.html' import render_comment_card with context %}
+
 {% for comment in comments %}
-  <div class="comment" data-id="{{ comment.id }}">
-    <div class="content">
-      <a href="#" class="author">{{ comment.creator.username }}</a>
-      <div class="metadata">
-        <span class="date">{{ moment(comment.create_time).fromNow() }}</span>
-      </div>
-      <div class="text">{{ comment.content }}</div>
-      <div class="actions">
-        <span class="like-comment to-bind">
-          {% if comment in current_user.liked_comments %}
-          <i class="heart icon orange"></i>
-          {% else %}
-          <i class="heart icon"></i>
-          {% endif %}
-          <span class="count">{{ comment.liked_users|length }}</span>
-        </span>
-        <span><i class="comment icon"></i></span>
-      </div>
-    </div>
-  </div>
+  {{ render_comment_card(comment) }}
 {% endfor %}

@@ -1,0 +1,74 @@
+{% macro render_post_card(post) %}
+  <div class="ui card orange">
+    <div class="content">
+      <div class="right floated meta">{{ moment(post.create_time).fromNow() }}</div>
+      <div class="header">
+        <a href="{{ url_for('front.topic', topic_id=(post.topic.id)) }}">
+          #{{ post.topic.name }}
+        </a>
+      </div>
+      <div class="description">
+        <a href="{{ url_for('front.post', post_id=post.id) }}">
+          <p>{{ post.content }}</p>
+        </a>
+      </div>
+    </div>
+    <div class="extra content actions">
+      <span class="left floated like-post to-bind" data-action="like-post">
+        {% if current_user in post.liked_users %}
+          <i class="heart icon orange"></i>
+        {% else %}
+          <i class="heart icon"></i>
+        {% endif %}
+        <span class="count">{{ post.liked_users|length }}</span>
+      </span>
+      <span class="left floated collect-post to-bind" data-action="collect-post">
+        {% if current_user in post.collected_users %}
+          <i class="star icon orange"></i>
+        {% else %}
+          <i class="star icon"></i>
+        {% endif %}
+      </span>
+      <span class="left floated comment-post to-bind" data-action="comment-post">
+        <i class="comment icon"></i>
+        <span class="count">{{ post.comments|length }}条评论</span>
+      </span>
+      <div class="right floated author">{{ post.creator.username }}</div>
+    </div>
+    {% if post.comments|length > 0 %}
+      <div class="extra content hot-comment" data-post-id="{{ post.id }}">
+        <a href="{{ url_for('front.post', post_id=post.id, _anchor='post-comments') }}">
+          <p class="header">热门评论</p>
+          {% set comment = post.get_hot_comments() %}
+          <div class="right floated meta">{{ comment.liked_users|length }}人赞了该评论</div>
+          <p>{{ comment.creator.username }}：{{ comment.content }}</p>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_comment_card(comment) %}
+  <div class="comment" data-id="{{ comment.id }}">
+    <div class="content">
+      <a href="#" class="author">{{ comment.creator.username }}</a>
+      <div class="metadata">
+        <span class="date">{{ moment(comment.create_time).fromNow() }}</span>
+      </div>
+      <div class="text">{{ comment.content }}</div>
+      <div class="actions">
+        <span class="like-comment to-bind" data-action="like-comment">
+          {% if comment in current_user.liked_comments %}
+            <i class="heart icon orange"></i>
+          {% else %}
+            <i class="heart icon"></i>
+          {% endif %}
+          <span class="count">{{ comment.liked_users|length }}</span>
+        </span>
+        <span class="comment-comment to-bind" data-action="comment-comment">
+          <i class="comment icon"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+{% endmacro %}

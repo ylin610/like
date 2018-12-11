@@ -74,7 +74,7 @@ body {
     color: #35d0ba!important;
 }
 
-.actions span {
+.actions>span {
     color: rgba(0,0,0,0.4);
     cursor: pointer;
     margin-right: 10px;
