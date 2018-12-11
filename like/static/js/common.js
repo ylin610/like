@@ -49,15 +49,24 @@ $(document).ready(function () {
         var action = self.data("action");
         var url = urlMap[action];
 
-        var iconE = self.children("i");
-        var countE = self.children("span");
-        var num = Number(countE.text());
-        if (iconE.hasClass("orange")) {
-            countE.text(num - 1);
-        } else {
-            countE.text(num + 1);
+        function shift(elem) {
+            var iconE = elem.children("i");
+            var countE = elem.children("span");
+            var num = Number(countE.text());
+            if (iconE.hasClass("orange")) {
+                countE.text(num - 1);
+            } else {
+                countE.text(num + 1);
+            }
+            iconE.toggleClass("orange");
         }
-        iconE.toggleClass("orange");
+        if (action === "likeComment") {
+            $("span[data-id='" + self.data("id") + "']").each(function () {
+                shift($(this));
+            });
+        } else {
+            shift($(this));
+        }
 
         $.ajax({
             url: url,
