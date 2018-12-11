@@ -3,7 +3,7 @@
 {% block page_title %}首页{% endblock %}
 
 {% block lg_content %}
-  <div id="stream"></div>
+  <div id="stream"></div>  {# 动态流 #}
 {% endblock %}
 
 {% block sm_content %}
@@ -45,8 +45,8 @@
 {% block scripts %}
   {{ super() }}
   <script>
-      var content_type = "post";
-      var topic = null;
+      var stream_type = "post";
+      var topic_id = null;
       var post_id = null;
   </script>
 {% endblock %}

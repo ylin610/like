@@ -36,21 +36,21 @@ $(document).ready(function () {
         });
     }
 
-    // ----------动态点赞和收藏----------
-    $(".like-post").click(function (event) {
-        event.preventDefault();
-        var action = "like";
-        actPost(action, $(this));
-    });
-    $(".collect-post").click(function (event) {
-        event.preventDefault();
-        var action = "collect";
-        actPost(action, $(this));
-    });
+    // ----------绑定点赞、收藏按钮的点击事件----------
+    function act() {
+        var self = $(this);
 
-    function actPost(action, elem) {
-        var countE = elem.children("span");
-        var iconE = elem.children("i");
+        let urlMap = {
+            likeComment: "/comment/like",
+            likePost: "/post/like",
+            collectPost: "/post/collect",
+            likeTopic: "/topic/like"
+        };
+        var action = self.data("action");
+        var url = urlMap[action];
+
+        var iconE = self.children("i");
+        var countE = self.children("span");
         var num = Number(countE.text());
         if (iconE.hasClass("orange")) {
             countE.text(num - 1);
@@ -60,68 +60,25 @@ $(document).ready(function () {
         iconE.toggleClass("orange");
 
         $.ajax({
-            url: "/post/" + action,
+            url: url,
             type: "GET",
             data: {
-                post_id: elem.data("id")
+                id: self.data("id")
             },
             success: function (data) {
-                console.log(data);
-            }
-        });
-    }
-
-    // ----------评论点赞----------
-    function likeComment() {
-        event.preventDefault();
-        var self = $(this);
-        var commentId = self.parent().parent().parent().data("id");
-
-        function shiftStatus(elem) {
-            var countE = elem.children("span");
-            var iconE = elem.children("i");
-            var num = Number(countE.text());
-            if (iconE.hasClass("orange")) {
-                countE.text(num - 1);
-            } else {
-                countE.text(num + 1);
-            }
-            iconE.toggleClass("orange");
-        }
-
-        $("div[data-id='" + commentId + "']").each(function () {
-            shiftStatus($(this).find("span.like-comment"));
-        });
-
-        $.ajax({
-            url: "/comment/like",
-            type: "GET",
-            data: {
-                comment_id: commentId
-            },
-            success: function (data) {
-                switch (data["code"]) {
-                    case 401:
-                        window.location = "/login";
-                        break;
-                    case 200:
-                        break;
-                    case 400:
-                        break;
-                }
             }
         });
     }
 
     function bind() {
         $(".to-bind").each(function () {
-            this.onclick = likeComment;
+            this.onclick = act;
             $(this).removeClass("to-bind");
         });
     }
 
     // ----------瀑布流----------
-    var url = {
+    var urlMap = {
         post: "/api/v1/post",
         comment: "/api/v1/comment",
     };
@@ -130,11 +87,11 @@ $(document).ready(function () {
 
     function loadPost(page) {
         $.ajax({
-            url: url[content_type],
+            url: urlMap[stream_type],
             type: "GET",
             data: {
                 page: page,
-                topic: topic,
+                topic_id: topic_id,
                 post_id: post_id
             },
             success: function (res) {

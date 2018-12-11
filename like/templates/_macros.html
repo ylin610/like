@@ -14,7 +14,8 @@
       </div>
     </div>
     <div class="extra content actions">
-      <span class="left floated like-post to-bind" data-action="like-post">
+    {# 点赞动态 #}
+      <span class="left floated like-post to-bind" data-action="likePost" data-id="{{ post.id }}">
         {% if current_user in post.liked_users %}
           <i class="heart icon orange"></i>
         {% else %}
@@ -22,14 +23,16 @@
         {% endif %}
         <span class="count">{{ post.liked_users|length }}</span>
       </span>
-      <span class="left floated collect-post to-bind" data-action="collect-post">
+    {# 收藏动态 #}
+      <span class="left floated collect-post to-bind" data-action="collectPost" data-id="{{ post.id }}">
         {% if current_user in post.collected_users %}
           <i class="star icon orange"></i>
         {% else %}
           <i class="star icon"></i>
         {% endif %}
+      <span class="count">{{ post.collected_users|length }}</span>
       </span>
-      <span class="left floated comment-post to-bind" data-action="comment-post">
+      <span class="left floated comment-post to-bind" data-action="commentPost" data-id="{{ post.id }}">
         <i class="comment icon"></i>
         <span class="count">{{ post.comments|length }}条评论</span>
       </span>
@@ -57,7 +60,8 @@
       </div>
       <div class="text">{{ comment.content }}</div>
       <div class="actions">
-        <span class="like-comment to-bind" data-action="like-comment">
+      {# 点赞评论 #}
+        <span class="like-comment to-bind" data-action="likeComment" data-id="{{ comment.id }}">
           {% if comment in current_user.liked_comments %}
             <i class="heart icon orange"></i>
           {% else %}
@@ -65,7 +69,7 @@
           {% endif %}
           <span class="count">{{ comment.liked_users|length }}</span>
         </span>
-        <span class="comment-comment to-bind" data-action="comment-comment">
+        <span class="comment-comment to-bind" data-action="commentComment" data-id="{{ comment.id }}">
           <i class="comment icon"></i>
         </span>
       </div>

@@ -12,7 +12,8 @@
       <div class="description">{{ topic.description }}</div>
     </div>
     <div class="extra content actions">
-        <span class="left floated like-topic" data-id="{{ topic.id }}">
+    {# 关注话题 #}
+        <span class="left floated like-topic to-bind" data-action="likeTopic" data-id="{{ topic.id }}">
           {% if current_user in topic.followers %}
             <i class="like icon orange"></i>
           {% else %}
@@ -24,7 +25,7 @@
         </span>
     </div>
   </div>
-  <div id="stream"></div>
+  <div id="stream"></div>  {# 动态流 #}
 {% endblock %}
 
 {% block sm_content %}
@@ -39,8 +40,8 @@
 {% block scripts %}
   {{ super() }}
   <script>
-      var content_type = "post";
-      var topic_id = {{ topic.id }};
+      var stream_type = "post";
+      var topic_id = {{ topic.id|int }};
       var post_id = null;
   </script>
 {% endblock %}

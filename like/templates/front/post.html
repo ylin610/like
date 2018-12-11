@@ -14,7 +14,8 @@
       <div class="description">{{ post.content }}</div>
     </div>
     <div class="extra content actions">
-      <span class="left floated like-post" data-id="{{ post.id }}">
+    {# 点赞动态 #}
+      <span class="left floated like-post to-bind" data-action="likePost" data-id="{{ post.id }}">
         {% if current_user in post.liked_users %}
         <i class="like icon orange"></i>
         {% else %}
@@ -24,7 +25,8 @@
         {{ post.liked_users|length }}
       </span>
       </span>
-      <span class="left floated collect-post" data-id="{{ post.id }}">
+    {# 收藏动态 #}
+      <span class="left floated collect-post to-bind" data-action="collectPost" data-id="{{ post.id }}">
         {% if current_user in post.collected_users %}
         <i class="star icon orange"></i>
         {% else %}
@@ -51,7 +53,8 @@
             </div>
             <div class="text">{{ comment.content }}</div>
             <div class="actions">
-              <span class="like-comment to-bind">
+            {# 点赞评论 #}
+              <span class="like-comment to-bind" data-action="likeComment" data-id="{{ comment.id }}">
                 {% if comment in current_user.liked_comments %}
                   <i class="heart icon orange"></i>
                 {% else %}
@@ -68,7 +71,7 @@
     </div>
     <div class="content">
       <div class="header">所有评论</div>
-      <div class="ui comments" id="stream">
+      <div class="ui comments" id="stream">  {# 评论流 #}
       </div>
     </div>
   </div>
@@ -92,8 +95,8 @@
 {% block scripts %}
   {{ super() }}
   <script>
-      var content_type = "comment";
-      var topic = null;
+      var stream_type = "comment";
+      var topic_id = null;
       var post_id = {{ post.id|int }};
   </script>
 {% endblock %}

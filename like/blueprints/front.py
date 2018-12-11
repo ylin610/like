@@ -42,7 +42,7 @@ def topic(topic_id):
 @front_bp.route('/comment/like')
 def like_comment():
     if current_user.is_authenticated:
-        comment_id = request.args.get('comment_id', type=int)
+        comment_id = request.args.get('id', type=int)
         comment = Comment.query.get(comment_id)
         if comment in current_user.liked_comments:
             current_user.liked_comments.remove(comment)
@@ -59,7 +59,7 @@ def like_comment():
 @front_bp.route('/post/like')
 def like_post():
     if current_user.is_authenticated:
-        post_id = request.args.get('post_id', type=int)
+        post_id = request.args.get('id', type=int)
         post = Post.query.get(post_id)
         if post in current_user.liked_posts:
             current_user.liked_posts.remove(post)
@@ -76,7 +76,7 @@ def like_post():
 @front_bp.route('/post/collect')
 def collect_post():
     if current_user.is_authenticated:
-        post_id = request.args.get('post_id', type=int)
+        post_id = request.args.get('id', type=int)
         post = Post.query.get(post_id)
         if post in current_user.collected_posts:
             current_user.collected_posts.remove(post)
