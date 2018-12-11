@@ -41,10 +41,10 @@ $(document).ready(function () {
         var self = $(this);
 
         let urlMap = {
-            likeComment: "/comment/like",
-            likePost: "/post/like",
-            collectPost: "/post/collect",
-            likeTopic: "/topic/like"
+            likeComment: "/action/comment/like",
+            likePost: "/action/post/like",
+            collectPost: "/action/post/collect",
+            likeTopic: "/action/topic/like"
         };
         var action = self.data("action");
         var url = urlMap[action];
