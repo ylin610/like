@@ -36,6 +36,41 @@ $(document).ready(function () {
         });
     }
 
+    // ----------动态点赞和收藏----------
+    $(".like-post").click(function (event) {
+        event.preventDefault();
+        var action = "like";
+        actPost(action, $(this));
+    });
+    $(".collect-post").click(function (event) {
+        event.preventDefault();
+        var action = "collect";
+        actPost(action, $(this));
+    });
+
+    function actPost(action, elem) {
+        var countE = elem.children("span");
+        var iconE = elem.children("i");
+        var num = Number(countE.text());
+        if (iconE.hasClass("orange")) {
+            countE.text(num - 1);
+        } else {
+            countE.text(num + 1);
+        }
+        iconE.toggleClass("orange");
+
+        $.ajax({
+            url: "/post/" + action,
+            type: "GET",
+            data: {
+                post_id: elem.data("id")
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
     // ----------评论点赞----------
     function likeComment() {
         event.preventDefault();
@@ -43,9 +78,8 @@ $(document).ready(function () {
         var commentId = self.parent().parent().parent().data("id");
 
         function shiftStatus(elem) {
-            var commE = elem.find("span.like-comment");
-            var countE = commE.children("span");
-            var iconE = commE.children("i");
+            var countE = elem.children("span");
+            var iconE = elem.children("i");
             var num = Number(countE.text());
             if (iconE.hasClass("orange")) {
                 countE.text(num - 1);
@@ -55,8 +89,8 @@ $(document).ready(function () {
             iconE.toggleClass("orange");
         }
 
-        $("div[data-id='"+commentId+"']").each(function () {
-            shiftStatus($(this));
+        $("div[data-id='" + commentId + "']").each(function () {
+            shiftStatus($(this).find("span.like-comment"));
         });
 
         $.ajax({

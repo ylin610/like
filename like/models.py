@@ -128,7 +128,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', back_populates='creator')
     collected_posts = db.relationship('Post',
                                       secondary=user_post_collect,
-                                      back_populates='collectors')
+                                      back_populates='collected_users')
     liked_posts = db.relationship('Post',
                                   secondary=user_post_like,
                                   back_populates='liked_users')
@@ -205,9 +205,9 @@ class Post(db.Model):
 
     topic = db.relationship('Topic', back_populates='posts')
     creator = db.relationship('User', back_populates='posts')
-    collectors = db.relationship('User',
-                                 secondary=user_post_collect,
-                                 back_populates='collected_posts')
+    collected_users = db.relationship('User',
+                                      secondary=user_post_collect,
+                                      back_populates='collected_posts')
     liked_users = db.relationship('User',
                                   secondary=user_post_like,
                                   back_populates='liked_posts')

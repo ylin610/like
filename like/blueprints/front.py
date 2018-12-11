@@ -48,3 +48,37 @@ def like_comment():
             return Restful.success('点赞成功')
     else:
         return Restful.unauth_error()
+
+
+@front_bp.route('/post/like')
+def like_post():
+    if current_user.is_authenticated:
+        post_id = request.args.get('post_id', type=int)
+        post = Post.query.get(post_id)
+        if post in current_user.liked_posts:
+            current_user.liked_posts.remove(post)
+            db.session.commit()
+            return Restful.success('取消成功')
+        else:
+            current_user.liked_posts.append(post)
+            db.session.commit()
+            return Restful.success('点赞成功')
+    else:
+        return Restful.unauth_error()
+
+
+@front_bp.route('/post/collect')
+def collect_post():
+    if current_user.is_authenticated:
+        post_id = request.args.get('post_id', type=int)
+        post = Post.query.get(post_id)
+        if post in current_user.collected_posts:
+            current_user.collected_posts.remove(post)
+            db.session.commit()
+            return Restful.success('取消成功')
+        else:
+            current_user.collected_posts.append(post)
+            db.session.commit()
+            return Restful.success('点赞成功')
+    else:
+        return Restful.unauth_error()

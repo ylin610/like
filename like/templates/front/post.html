@@ -11,9 +11,27 @@
       <div class="meta">{{ moment(post.create_time).fromNow() }}</div>
       <div class="description">{{ post.content }}</div>
     </div>
-    <div class="extra content post-actions">
-      <span class="left floated like"><i class="like icon"></i>赞</span>
-      <span class="left floated star"><i class="star icon"></i>收藏</span>
+    <div class="extra content actions">
+      <span class="left floated like-post" data-id="{{ post.id }}">
+        {% if current_user in post.liked_users %}
+        <i class="like icon orange"></i>
+        {% else %}
+        <i class="like icon"></i>
+        {% endif %}
+      <span class="count">
+        {{ post.liked_users|length }}
+      </span>
+      </span>
+      <span class="left floated collect-post" data-id="{{ post.id }}">
+        {% if current_user in post.collected_users %}
+        <i class="star icon orange"></i>
+        {% else %}
+        <i class="star icon"></i>
+        {% endif %}
+      <span class="count">
+        {{ post.collected_users|length }}
+      </span>
+      </span>
     </div>
   </div>
   <div class="ui card" id="post-comments">

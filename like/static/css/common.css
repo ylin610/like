@@ -64,15 +64,6 @@ body {
     font-size: 1.1em!important;
 }
 
-.post-actions i {
-    padding-right: 2px;
-}
-
-.post-actions span {
-    padding-right: 15px;
-    cursor: pointer;
-}
-
 .lg-content .ui.card p, .description {
     font-size: 1em!important;
     font-weight: bolder;
@@ -88,7 +79,6 @@ body {
     cursor: pointer;
     margin-right: 10px;
 }
-
 
 .actions span:hover {
     color: rgba(0,0,0,0.6);
@@ -114,9 +104,12 @@ body {
     background-color: #ff9234;
 }
 
-
 .placeholder {
     display: block;
     height: 66px;
     width: 100%;
+}
+
+.ui.card > .content .icon {
+    opacity: 1!important;
 }
