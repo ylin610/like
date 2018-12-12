@@ -65,6 +65,13 @@ user_comment_like = db.Table(
     )
 
 
+follow = db.Table(
+    'follow',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
+
+
 class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(32))
@@ -140,7 +147,12 @@ class User(db.Model, UserMixin):
     discussions = db.relationship('Discussion', secondary=user_discussion, back_populates='participants')
     statements = db.relationship('Statement', back_populates='creator')
 
-    # TODO: 添加用户关注
+    followed = db.relationship('User',
+                               secondary=follow,
+                               primaryjoin=(follow.c.follower_id == id),
+                               secondaryjoin=(follow.c.followed_id == id),
+                               backref=db.backref('followers')
+                               )
 
     @property
     def password(self):
@@ -224,6 +236,7 @@ class Comment(db.Model):
 
     creator_id = db.Column(db.ForeignKey('user.id'))
     post_id = db.Column(db.ForeignKey('post.id'))
+    replied_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
 
     creator = db.relationship('User', back_populates='comments')
     post = db.relationship('Post', back_populates='comments')
@@ -231,7 +244,8 @@ class Comment(db.Model):
                                   secondary=user_comment_like,
                                   back_populates='liked_comments')
 
-    # TODO: 添加评论内评论
+    replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
+    replies = db.relationship('Comment', back_populates='replied')
 
 
 class Discussion(db.Model):

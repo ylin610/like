@@ -9,7 +9,7 @@ from flask import (
     request
     )
 from like.models import Post, Topic, Comment, User
-from like.forms import NewPostForm
+from like.forms import NewPostForm, NewTopicForm
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
 from like.exts import db
@@ -61,6 +61,22 @@ def new_post():
                         topic=topic,
                         creator=current_user)
             db.session.add(post)
+            db.session.commit()
+            return redirect(url_for('user.index', user_id=current_user.id))
+        topic_id = request.args.get('topic', 1)
+        return render_template('front/new_post.html', form=form, topic_id=topic_id)
+    abort(401)
+
+
+@front_bp.route('/topic/new', methods=['GET', 'POST'])
+@login_required
+def new_topic():
+    if current_user.has_permission('PUBLISH'):
+        form = NewTopicForm()
+        if form.validate_on_submit():
+            name = form.name.data
+            topic = Topic(name=name, creator=current_user)
+            db.session.add(topic)
             db.session.commit()
             return redirect(url_for('user.index', user_id=current_user.id))
         return render_template('front/new_post.html', form=form)

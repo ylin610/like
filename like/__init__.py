@@ -78,6 +78,7 @@ def register_commands(app):
         Role.init_role()
         click.echo('数据库初始化完毕！\n正在生成虚拟数据...')
         fake_users()
+        fake_follows()
         fake_topics()
         fake_posts()
         fake_comments()

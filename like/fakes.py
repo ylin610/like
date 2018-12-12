@@ -24,6 +24,17 @@ def fake_users(count=30):
     db.session.commit()
 
 
+def fake_follows():
+    users = User.query.all()
+    for user in users:
+        followers = random.sample(users, k=random.randint(0,10))
+        if user in followers:
+            followers.remove(user)
+        user.followers = followers
+        db.session.add(user)
+    db.session.commit()
+
+
 def fake_topics(count=20):
     users = User.query.all()
     for _ in range(count):
@@ -44,7 +55,7 @@ def fake_posts(count=150):
                     topic=random.choice(topics),
                     creator=random.choice(users),
                     create_time=fake.date_time_this_year(),
-                    collectors=random.sample(users, k=random.randint(1, len(users))),
+                    collected_users=random.sample(users, k=random.randint(1, len(users))),
                     liked_users=random.sample(users, k=random.randint(1, len(users)))
                     )
         db.session.add(post)
@@ -60,7 +71,14 @@ def fake_comments(count=500):
                           post=random.choice(posts),
                           liked_users=random.sample(users, k=random.randint(1,20))
                           )
-        comment.create_time = fake.date_time_this_year(after_now=comment.create_time)
+        comment.create_time = fake.date_time_this_year(after_now=comment.post.create_time)
+        replies =  random.choice([0,0,0,0,0,1,2,3])
+        for _ in range(replies):
+            reply = Comment(content=''.join(fake.sentences(nb=random.randint(1, 3))),
+                            creator=random.choice(users),
+                            create_time=fake.date_time_this_year(after_now=comment.create_time),
+                            replied=comment
+            )
         db.session.add(comment)
     db.session.commit()
 

@@ -41,9 +41,14 @@ class LoginForm(FlaskForm):
 
 class NewPostForm(FlaskForm):
     topic = SelectField('话题', coerce=int, default=1)
-    content = TextAreaField()
+    content = TextAreaField(validators=[DataRequired('请输入内容')])
     submit = SubmitField('发表')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.topic.choices = [(topic.id, topic.name) for topic in Topic.query.all()]
+
+
+class NewTopicForm(FlaskForm):
+    name = StringField('名称', validators=[DataRequired('请输入话题名称')])
+    submit = SubmitField('创建话题')

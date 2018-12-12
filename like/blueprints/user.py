@@ -41,16 +41,20 @@ def topic(user_id):
     return render_template('user/topic.html', user=user, topics=topics)
 
 
-@user_bp.route('/follower')
+@user_bp.route('/<int:user_id>/followers')
 @login_required
-def follower():
-    pass
+def followers(user_id):
+    user = User.query.get(user_id)
+    followers = user.followers
+    return render_template('user/follower.html', user=user, followers=followers)
 
 
-@user_bp.route('/followed')
+@user_bp.route('/<int:user_id>/followed')
 @login_required
-def followed():
-    pass
+def followed(user_id):
+    user = User.query.get(user_id)
+    followed = user.followed
+    return render_template('user/followed.html', user=user, followed=followed)
 
 
 @user_bp.route('/action/<string:target_type>/<string:action>')

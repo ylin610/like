@@ -31,8 +31,10 @@
 {% block sm_content %}
   <div class="ui relaxed list">
     <div class="item">
+      <a href="{{ url_for('front.new_post', topic=topic.id) }}">
       <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ topic.name }}下发表动态
       </button>
+      </a>
     </div>
   </div>
 {% endblock %}

@@ -102,17 +102,17 @@
     {% endif %}
     <div class="extra content">
       <div class="ui horizontal statistics">
-        <a href="#">
+        <a href="{{ url_for('user.followed', user_id=user.id) }}">
           <div class="statistic">
-            <div class="value">xx</div>
+            <div class="value">{{ user.followed|length }}</div>
             <div class="label">
               {% if user is is_current_user %}我{% else %}Ta{% endif %}关注的人
             </div>
           </div>
         </a>
-        <a href="#">
+        <a href="{{ url_for('user.followers', user_id=user.id) }}">
           <div class="statistic">
-            <div class="value">xx</div>
+            <div class="value">{{ user.followers|length }}</div>
             <div class="label">
               关注{% if user is is_current_user %}我{% else %}Ta{% endif %}的人
             </div>
