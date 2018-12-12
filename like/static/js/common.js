@@ -92,7 +92,7 @@ $(document).ready(function () {
         post: "/api/v1/post",
         comment: "/api/v1/comment",
         discovery: "/api/v1/discovery",
-        trend: "/api/v1/trend"
+        collection: "/api/v1/collection"
     };
     var next_page = 1;
     var hasNext = true;

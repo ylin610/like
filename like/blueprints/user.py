@@ -27,17 +27,18 @@ def index(user_id):
     return render_template('user/index.html', user=user, stream='post')
 
 
-@user_bp.route('/post')
+@user_bp.route('/<int:user_id>/collection')
 @login_required
-def post():
-    pass
+def collection(user_id):
+    user = User.query.get(user_id)
+    return render_template('user/collection.html', user=user, stream='collection')
 
 
 @user_bp.route('/<int:user_id>/topic')
 @login_required
 def topic(user_id):
     user = User.query.get(user_id)
-    topics = Topic.query.join(Topic.followers).filter(User.id==user_id).all()
+    topics = Topic.query.join(Topic.followers).filter(User.id == user_id).all()
     return render_template('user/topic.html', user=user, topics=topics)
 
 

@@ -134,7 +134,7 @@
             <div class="label">关注的话题</div>
           </div>
         </a>
-        <a href="#">
+        <a href="{{ url_for('user.collection', user_id=user.id) }}">
           <div class="statistic">
             <div class="value">{{ user.collected_posts|length }}</div>
             <div class="label">收藏的动态</div>
