@@ -97,7 +97,17 @@
     </div>
     {% if user is not is_current_user %}
       <div class="extra content">
-        <a href="#" data-id="{{ user.id }}"><i class="heart icon"></i> 关注</a>
+      {% if user in current_user.followed %}
+        <a class="follow-user" data-id="{{ user.id }}">
+          <i class="heart icon orange"></i>
+          <span class="follow-status">取消关注</span>
+        </a>
+        {% else %}
+        <a class="follow-user" data-id="{{ user.id }}">
+          <i class="heart icon"></i>
+          <span class="follow-status">关注</span>
+        </a>
+        {% endif %}
       </div>
     {% endif %}
     <div class="extra content">

@@ -57,6 +57,23 @@ def followed(user_id):
     return render_template('user/followed.html', user=user, followed=followed)
 
 
+@user_bp.route('/follow')
+@login_required
+def follow():
+    user_id = request.args.get('id', type=int)
+    user = User.query.get(user_id)
+    if user in current_user.followed:
+        user.followers.remove(current_user)
+        db.session.add(user)
+        db.session.commit()
+        return Restful.success('取关成功')
+    else:
+        user.followers.append(current_user)
+        db.session.add(user)
+        db.session.commit()
+        return Restful.success('关注成功')
+
+
 @user_bp.route('/action/<string:target_type>/<string:action>')
 def act(target_type, action):
     q_map = {
@@ -65,10 +82,11 @@ def act(target_type, action):
             'like': 'liked_posts',
             'collect': 'collected_posts'
         },
-        'comment': {'liked': 'liked_comments'}
+        'comment': {'like': 'liked_comments'},
+        'user': {'like': 'followers'}
     }
 
-    model_map = {'topic': Topic, 'post': Post, 'comment': Comment}
+    model_map = {'topic': Topic, 'post': Post, 'comment': Comment, 'user': User}
 
     if current_user.is_authenticated:
         target_id = request.args.get('id', type=int)

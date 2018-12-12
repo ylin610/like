@@ -23,3 +23,8 @@
     </div>
   </div>
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {{ render_static('js', 'js/user.js') }}
+{% endblock %}

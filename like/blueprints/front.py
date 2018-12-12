@@ -79,7 +79,7 @@ def new_topic():
             db.session.add(topic)
             db.session.commit()
             return redirect(url_for('user.index', user_id=current_user.id))
-        return render_template('front/new_post.html', form=form)
+        return render_template('front/new_topic.html', form=form)
     abort(401)
 
 

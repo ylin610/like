@@ -44,7 +44,8 @@ $(document).ready(function () {
             likeComment: "/user/action/comment/like",
             likePost: "/user/action/post/like",
             collectPost: "/user/action/post/collect",
-            likeTopic: "/user/action/topic/like"
+            likeTopic: "/user/action/topic/like",
+            likeUser: "/user/action/user/like"
         };
         var action = self.data("action");
         var url = urlMap[action];

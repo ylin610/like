@@ -48,7 +48,7 @@ def discover():
     page = request.args.get('page', 1, type=int)
     num = request.args.get('num', current_app.config['COMMENTS_PER_PAGE'], type=int)
     date = datetime.now() - timedelta(days=7)
-    query = Post.query.join(Post.liked_users).filter(Post.create_time < date) \
+    query = Post.query.join(Post.liked_users).filter(Post.create_time > date) \
         .group_by(Post.id).order_by(func.count(User.id).desc()).paginate(page, num)
     html = render_template('api/post.html', posts=query.items)
     res = {'html': html, 'has_next': query.has_next}
