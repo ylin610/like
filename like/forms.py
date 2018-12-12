@@ -1,9 +1,9 @@
 # coding: utf-8
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField
 from wtforms.validators import Email, Regexp, DataRequired, EqualTo, ValidationError
 from like.utils import Memcached
-from like.models import User
+from like.models import User, Topic
 
 
 class SignUpForm(FlaskForm):
@@ -37,3 +37,13 @@ class LoginForm(FlaskForm):
             raise ValidationError('用户名或密码错误')
         else:
             self.user = user
+
+
+class NewPostForm(FlaskForm):
+    topic = SelectField('话题', coerce=int, default=1)
+    content = TextAreaField()
+    submit = SubmitField('发表')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.topic.choices = [(topic.id, topic.name) for topic in Topic.query.all()]

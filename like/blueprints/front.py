@@ -2,10 +2,14 @@
 from flask import (
     Blueprint,
     render_template,
+    redirect,
+    url_for,
+    abort,
     current_app,
     request
     )
 from like.models import Post, Topic, Comment, User
+from like.forms import NewPostForm
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
 from like.exts import db
@@ -15,22 +19,21 @@ from like.utils import Restful
 front_bp = Blueprint('front', __name__)
 
 
+@front_bp.context_processor
+def make_context():
+    hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id) \
+        .order_by(func.count(Post.id).desc()).limit(5)
+    return {'hot_topics': hot_topics}
+
+
 @front_bp.route('/')
 def index():
-    page = request.args.get('page')
-    per_page = current_app.config['POSTS_PER_PAGE']
-    pagination = Post.query.order_by(Post.create_time.desc()).paginate(page, per_page)
-    posts = pagination.items
-
-    hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id).order_by(func.count(Post.id)).limit(5)
-    # hot_posts = Post.query.join(Post.liked_users).group_by(Post.id).order_by(func.count(User.id)).limit(5)
-    return render_template('front/index.html', hot_topics=hot_topics)
+    return render_template('front/index.html', stream='post', title='首页')
 
 
-@front_bp.route('/post/<int:post_id>')
-def post(post_id):
-    post = Post.query.get(post_id)
-    return render_template('front/post.html', post=post)
+@front_bp.route('/discovery')
+def discovery():
+    return render_template('front/index.html', stream='discovery', title='发现')
 
 
 @front_bp.route('/topic/<int:topic_id>')
@@ -39,33 +42,29 @@ def topic(topic_id):
     return render_template('front/topic.html', topic=topic)
 
 
-@front_bp.route('/action/<string:type>/<string:action>')
-def act(type, action):
-    q_map = {
-        'topic': {'like': 'followed_topics'},
-        'post': {
-            'like': 'liked_posts',
-            'collect': 'collected_posts'
-        },
-        'comment': {'liked': 'liked_comments'}
-    }
+@front_bp.route('/post/<int:post_id>')
+def post(post_id):
+    post = Post.query.get(post_id)
+    return render_template('front/post.html', post=post)
 
-    model_map = {'topic': Topic, 'post': Post, 'comment': Comment}
 
-    if current_user.is_authenticated:
-        id = request.args.get('id', type=int)
-        item = model_map[type].query.get(id)
-        q = getattr(current_user, q_map[type][action])
-        if item in q:
-            q.remove(item)
+@front_bp.route('/post/new', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    if current_user.has_permission('PUBLISH'):
+        form = NewPostForm()
+        if form.validate_on_submit():
+            content = form.content.data
+            topic_id = form.topic.data
+            topic = Topic.query.get(topic_id)
+            post = Post(content=content,
+                        topic=topic,
+                        creator=current_user)
+            db.session.add(post)
             db.session.commit()
-            return Restful.success('取消成功')
-        else:
-            q.append(item)
-            db.session.commit()
-            return Restful.success('关注成功')
-    else:
-        return Restful.unauth_error()
+            return redirect(url_for('user.index', user_id=current_user.id))
+        return render_template('front/new_post.html', form=form)
+    abort(401)
 
 
 # @front_bp.route('/topic/like')
@@ -118,7 +117,7 @@ def act(type, action):
 #     else:
 #         return Restful.unauth_error()
 #
-# 
+#
 # @front_bp.route('/post/collect')
 # def collect_post():
 #     if current_user.is_authenticated:

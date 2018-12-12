@@ -1,0 +1,17 @@
+{% extends 'user/_base_user.html' %}
+
+{% block page_title %}{{ user.username }}的主页{% endblock %}
+
+{% block lg_content %}
+  <div id="stream"></div>  {# 动态流 #}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+      var stream_type = "{{ stream }}";
+      var topic_id = null;
+      var post_id = null;
+      var user_id = {{ user.id|int }};
+  </script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'user/_base_user.html' %}
+
+{% block page_title %}{{ user.username }}关注的话题{% endblock %}
+
+{% block lg_content %}
+  <div class="ui link cards">
+    {% for topic in topics %}
+      <div class="card">
+          <div class="content">
+        <a href="{{ url_for('front.topic', topic_id=topic.id) }}">
+            <div class="header">{{ topic.name }}</div>
+            <div class="description">{{ topic.description }}</div>
+        </a>
+          </div>
+      </div>
+    {% endfor %}
+
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ render_static('js', 'js/jquery.min.js') }}
+  {{ render_static('js', 'semantic-ui/semantic.min.js') }}
+  <script>
+  $('.ui.sticky').sticky({
+            context: '#lg-content'
+        });
+  </script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'front/_base_front.html' %}
+
+{% block page_title %}发表动态{% endblock %}
+
+{% block lg_content %}
+  <form method="post" class="ui form">
+  <div class="field">
+    {{ form.csrf_token() }}
+  </div>
+  <div class="field">
+    {{ form.topic.label }}
+    {{ form.topic }}
+  </div>
+  <div class="field">
+    {{ form.content.label }}
+    {{ form.content }}
+  </div>
+  <div class="field">
+    {{ form.submit(class='fluid ui button') }}
+  </div>
+  </form>
+{% endblock %}

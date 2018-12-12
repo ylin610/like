@@ -41,10 +41,10 @@ $(document).ready(function () {
         var self = $(this);
 
         let urlMap = {
-            likeComment: "/action/comment/like",
-            likePost: "/action/post/like",
-            collectPost: "/action/post/collect",
-            likeTopic: "/action/topic/like"
+            likeComment: "/user/action/comment/like",
+            likePost: "/user/action/post/like",
+            collectPost: "/user/action/post/collect",
+            likeTopic: "/user/action/topic/like"
         };
         var action = self.data("action");
         var url = urlMap[action];
@@ -90,6 +90,8 @@ $(document).ready(function () {
     var urlMap = {
         post: "/api/v1/post",
         comment: "/api/v1/comment",
+        discovery: "/api/v1/discovery",
+        trend: "/api/v1/trend"
     };
     var next_page = 1;
     var hasNext = true;
@@ -101,7 +103,8 @@ $(document).ready(function () {
             data: {
                 page: page,
                 topic_id: topic_id,
-                post_id: post_id
+                post_id: post_id,
+                user_id: user_id
             },
             success: function (res) {
                 $("#stream").append(res["data"]["html"]);

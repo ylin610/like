@@ -32,11 +32,13 @@
         {% endif %}
       <span class="count">{{ post.collected_users|length }}</span>
       </span>
-      <span class="left floated comment-post to-bind" data-action="commentPost" data-id="{{ post.id }}">
+      <span class="left floated comment-post" data-action="commentPost" data-id="{{ post.id }}">
         <i class="comment icon"></i>
         <span class="count">{{ post.comments|length }}条评论</span>
       </span>
-      <div class="right floated author">{{ post.creator.username }}</div>
+      <div class="right floated author">
+        <a href="{{ url_for('user.index', user_id=post.creator_id) }}">{{ post.creator.username }}</a>
+      </div>
     </div>
     {% if post.comments|length > 0 %}
       <div class="extra content hot-comment" data-post-id="{{ post.id }}">
@@ -72,6 +74,62 @@
         <span class="comment-comment to-bind" data-action="commentComment">
           <i class="comment icon"></i>
         </span>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro render_trend_card(trend) %}
+{% endmacro %}
+
+{% macro render_user_card(user) %}
+<div class="ui card user-card">
+    <div class="image">
+
+    </div>
+    <div class="content">
+      <div class="header">
+        <span>{{ user.username }}</span>
+      </div>
+      <div class="description">
+        <span>{{ user.bio }}</span>
+      </div>
+    </div>
+    {% if user is not is_current_user %}
+      <div class="extra content">
+        <a href="#" data-id="{{ user.id }}"><i class="heart icon"></i> 关注</a>
+      </div>
+    {% endif %}
+    <div class="extra content">
+      <div class="ui horizontal statistics">
+        <a href="#">
+          <div class="statistic">
+            <div class="value">xx</div>
+            <div class="label">
+              {% if user is is_current_user %}我{% else %}Ta{% endif %}关注的人
+            </div>
+          </div>
+        </a>
+        <a href="#">
+          <div class="statistic">
+            <div class="value">xx</div>
+            <div class="label">
+              关注{% if user is is_current_user %}我{% else %}Ta{% endif %}的人
+            </div>
+          </div>
+        </a>
+        <a href="{{ url_for('user.topic', user_id=user.id) }}">
+          <div class="statistic">
+            <div class="value">{{ user.followed_topics|length }}</div>
+            <div class="label">关注的话题</div>
+          </div>
+        </a>
+        <a href="#">
+          <div class="statistic">
+            <div class="value">{{ user.collected_posts|length }}</div>
+            <div class="label">收藏的动态</div>
+          </div>
+        </a>
       </div>
     </div>
   </div>

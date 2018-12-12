@@ -4,7 +4,7 @@ from like.exts import db, bs, csrf, moment, login, mail
 import os
 from like.settings import config
 from like.models import Permission, Role, User, Post, Discussion, Topic, Comment
-from like.blueprints import front_bp, api_bp, auth_bp
+from like.blueprints import front_bp, api_bp, auth_bp, user_bp
 from like.fakes import *
 import click
 
@@ -28,6 +28,7 @@ def register_blueprints(app):
     app.register_blueprint(front_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(user_bp)
 
 
 def register_exts(app):

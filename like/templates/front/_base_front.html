@@ -1,35 +1,6 @@
 {% extends '_base.html' %}
-{% from 'bootstrap/utils.html' import render_static %}
-
-{% block head %}
-  {{ render_static('css', 'css/common.css') }}
-{% endblock %}
 
 {% block body %}
-<div class="ui orange inverted large top fixed menu">
-  <div class="nav-container">
-  <div class="item">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 895.12 895.12" style="height: 28px;width: 28px"><defs><style>.cls-1{fill:#F2711C;}.cls-2{fill:#7acfdf;}.cls-3{fill:#fcf2cb;}</style></defs><title>like</title><g id="background"><rect class="cls-1" width="895.12" height="895.12" rx="194.25" ry="194.25"/></g><g id="logo"><path class="cls-2" d="M731.73,788.32l-42,42H479.58a125,125,0,0,1-125-125V209.61l42-42,38.79,545.32a49,49,0,0,0,49,49Z" transform="translate(-64.21 -63.87)"/><path class="cls-3" d="M731.73,694v94.32H521.58a125,125,0,0,1-125-125V167.61H494V644a50,50,0,0,0,50,50Z" transform="translate(-64.21 -63.87)"/></g></svg>
-  </div>
-  <a href="{{ url_for('front.index') }}" class="item">首页</a>
-  <a class="item">发现</a>
-    <div class="item">
-    <div class="ui icon input" style="width: 500px;">
-      <input type="text" placeholder="请输入关键字">
-      <i class="search link icon"></i>
-    </div>
-  </div>
-    <div class="right menu">
-      {% if current_user.is_authenticated %}
-        <a class="item">{{ current_user.username }}</a>
-        <a class="item" href="{{ url_for('auth.logout') }}"><i class="power off icon yellow"></i></a>
-      {% else %}
-  <a class="item" href="{{ url_for('auth.sign_up') }}">注册</a>
-  <a class="item" href="{{ url_for('auth.login') }}">登录</a>
-      {% endif %}
-    </div>
-  </div>
-</div>
   <div class="page-container">
     <div class="lg-content" id="lg-content">
       {% block lg_content %}
@@ -39,16 +10,35 @@
     <div class="ui sticky">
     <div class="placeholder"></div>
       {% block sm_content %}
+          <div class="ui card" id="action-card">
+    <div class="content">
+      <div class="center aligned header">立刻开始</div>
+      <div class="ui big horizontal list main-actions">
+        <div class="item action-item">
+          <a href="{{ url_for('front.new_post') }}">
+              <i class="edit icon"></i>
+            <div class="item">动态</div>
+          </a>
+        </div>
+        <div class="item action-item">
+              <i class="comments icon"></i>
+            <div class="item">讨论</div>
+        </div>
+        <div class="item action-item">
+          <a href="{{ url_for('user.index', user_id=current_user.id) }}">
+              <i class="home icon"></i>
+            <div class="item">主页</div>
+          </a>
+        </div>
+        <div class="item action-item">
+              <i class="cog icon"></i>
+            <div class="item">设置</div>
+        </div>
+      </div>
+    </div>
+  </div>
       {% endblock %}
     </div>
     </div>
   </div>
-{% endblock %}
-{% block scripts %}
-  {{ render_static('js', 'js/jquery.min.js') }}
-{#  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>#}
-{#  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.map"></script>#}
-  {{ render_static('js', 'js/moment-with-locales.min.js') }}
-  {{ render_static('js', 'semantic-ui/semantic.min.js') }}
-  {{ render_static('js', 'js/common.js') }}
 {% endblock %}

@@ -1,0 +1,5 @@
+{% from '_macros.html' import render_trend_card with context %}
+
+{% for trend in trends %}
+  {{ render_trend_card(trend) }}
+{% endfor %}

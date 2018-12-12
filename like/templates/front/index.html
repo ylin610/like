@@ -1,41 +1,21 @@
 {% extends 'front/_base_front.html' %}
 
-{% block page_title %}首页{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
 
 {% block lg_content %}
   <div id="stream"></div>  {# 动态流 #}
 {% endblock %}
 
 {% block sm_content %}
-  <div class="ui card" id="action-card">
-    <div class="content">
-      <div class="center aligned header">立刻开始</div>
-      <div class="ui big horizontal list main-actions">
-        <div class="item action-item">
-              <i class="edit icon"></i>
-            <div class="item">动态</div>
-        </div>
-        <div class="item action-item">
-              <i class="comments icon"></i>
-            <div class="item">讨论</div>
-        </div>
-        <div class="item action-item">
-              <i class="cog icon"></i>
-            <div class="item">设置</div>
-        </div>
-        <div class="item action-item">
-              <i class="star icon"></i>
-            <div class="item">收藏</div>
-        </div>
-      </div>
-    </div>
-  </div>
+  {{ super() }}
   <div class="ui card" id="topic-card">
     <div class="content">
       <div class="center aligned header">热门话题</div>
       <div class="description">
         {% for topic in hot_topics %}
-          <a class="ui large label" href="#">{{ topic.name }}</a>
+          <a class="ui large label" href="{{ url_for('front.topic', topic_id=topic.id) }}">
+            {{ topic.name }}
+          </a>
         {% endfor %}
       </div>
     </div>
@@ -45,8 +25,9 @@
 {% block scripts %}
   {{ super() }}
   <script>
-      var stream_type = "post";
+      var stream_type = "{{ stream }}";
       var topic_id = null;
       var post_id = null;
+      var user_id = null;
   </script>
 {% endblock %}

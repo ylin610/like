@@ -15,8 +15,6 @@ body {
     z-index: 999!important;
 }
 
-.page-container {}
-
 .main-actions {
     display: flex !important;
     justify-content: space-around !important;
@@ -33,14 +31,19 @@ body {
     color: #35d0ba;
 }
 
+.action-item>a {
+    display: flex!important;
+    flex-direction: column;
+    align-items: center;
+    color: #35d0ba;
+}
+
 .action-item i {
     display: flex!important;
     margin: 10px!important;
 }
 
 .nav-container, .page-container {
-    min-width: 775px !important;
-    max-width: 1140px !important;
     margin: auto !important;
     display: flex;
     width: 1000px;
