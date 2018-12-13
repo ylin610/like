@@ -63,10 +63,6 @@ body {
     width: 100%;
 }
 
-.lg-content .card .content {
-    font-size: 1.1em!important;
-}
-
 .lg-content .ui.card p, .description {
     font-size: 1em!important;
     font-weight: bolder;

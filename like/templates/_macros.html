@@ -62,7 +62,7 @@
       </div>
       <div class="text">{{ comment.content }}</div>
       <div class="actions">
-      {# 点赞评论 #}
+        {# 点赞评论 #}
         <span class="like-comment to-bind" data-action="likeComment" data-id="{{ comment.id }}">
           {% if comment in current_user.liked_comments %}
             <i class="heart icon orange"></i>
@@ -71,10 +71,37 @@
           {% endif %}
           <span class="count">{{ comment.liked_users|length }}</span>
         </span>
+        {# 回复评论 #}
         <span class="comment-comment to-bind" data-action="commentComment">
           <i class="comment icon"></i>
         </span>
       </div>
+      {% if comment.ordered_replies|length > 0 %}
+        <div class="comments">
+          {% for reply in comment.ordered_replies %}
+            <div class="comment">
+              <div class="content">
+                <a href="#" class="author">{{ reply.creator.username }}</a>
+                <div class="metadata">
+                  <span class="date">{{ moment(reply.create_time).fromNow() }}</span>
+                </div>
+                <div class="text">{{ reply.content }}</div>
+                <div class="actions">
+                  {# 点赞回复 #}
+                  <span class="like-comment to-bind" data-action="likeComment" data-id="{{ reply.id }}">
+                    {% if reply in current_user.liked_comments %}
+                      <i class="heart icon orange"></i>
+                    {% else %}
+                      <i class="heart icon"></i>
+                    {% endif %}
+                      <span class="count">{{ reply.liked_users|length }}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endmacro %}

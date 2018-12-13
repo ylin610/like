@@ -247,6 +247,10 @@ class Comment(db.Model):
     replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
     replies = db.relationship('Comment', back_populates='replied')
 
+    @property
+    def ordered_replies(self):
+        return sorted(self.replies, key=lambda x: x.create_time, reverse=True)
+
 
 class Discussion(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
