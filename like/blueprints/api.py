@@ -68,6 +68,14 @@ def collection():
     return Restful.success(data=res)
 
 
+@api_bp.route('/reply_input')
+def get_reply_input():
+    comment_id = request.args.get('comment_id', type=int)
+    comment = Comment.query.get(comment_id)
+    html = render_template('api/reply.html', comment=comment)
+    return Restful.success(data=html)
+
+
 # @api_bp.route('/trend')
 # def trend():
 #     user = request.args.get('user_id', type=int)

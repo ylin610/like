@@ -75,6 +75,19 @@ def follow():
         return Restful.success('关注成功')
 
 
+@user_bp.route('/reply')
+@login_required
+def reply():
+    comment_id = request.args.get('comment_id')
+    content = request.args.get('content')
+    to_comment = Comment.query.get(comment_id)
+    comment = Comment(content=content, creator=current_user, replied=to_comment)
+    db.session.add(comment)
+    db.session.commit()
+    return Restful.success()
+
+
+
 @user_bp.route('/action/<string:target_type>/<string:action>')
 def act(target_type, action):
     q_map = {

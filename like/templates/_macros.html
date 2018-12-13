@@ -72,7 +72,7 @@
           <span class="count">{{ comment.liked_users|length }}</span>
         </span>
         {# 回复评论 #}
-        <span class="comment-comment to-bind" data-action="commentComment">
+        <span class="reply-comment to-bind-replyInput" data-action="replyComment" data-replyto="{{ comment.id }}">
           <i class="comment icon"></i>
         </span>
       </div>

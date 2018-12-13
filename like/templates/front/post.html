@@ -1,4 +1,5 @@
 {% extends 'front/_base_front.html' %}
+{% from '_macros.html' import render_comment_card with context %}
 
 {% block page_title %}{{ post.topic.name }}{% endblock %}
 
@@ -45,27 +46,31 @@
         {% set comment = post.get_hot_comments() %}
           {% if comment is none %}
           {% else %}
-        <div class="comment" data-id="{{ comment.id }}">
-          <div class="content">
-            <a href="#" class="author">{{ comment.creator.username }}</a>
-            <div class="metadata">
-              <span class="date">{{ moment(comment.create_time).fromNow() }}</span>
-            </div>
-            <div class="text">{{ comment.content }}</div>
-            <div class="actions">
+            {{ render_comment_card(comment) }}
+{#        <div class="comment" data-id="{{ comment.id }}">#}
+{#          <div class="content">#}
+{#            <a href="#" class="author">{{ comment.creator.username }}</a>#}
+{#            <div class="metadata">#}
+{#              <span class="date">{{ moment(comment.create_time).fromNow() }}</span>#}
+{#            </div>#}
+{#            <div class="text">{{ comment.content }}</div>#}
+{#            <div class="actions">#}
             {# 点赞评论 #}
-              <span class="like-comment to-bind" data-action="likeComment" data-id="{{ comment.id }}">
-                {% if comment in current_user.liked_comments %}
-                  <i class="heart icon orange"></i>
-                {% else %}
-                  <i class="heart icon"></i>
-                {% endif %}
-                <span class="count">{{ comment.liked_users|length }}</span>
-              </span>
-              <span><i class="comment icon"></i></span>
-            </div>
-          </div>
-        </div>
+{#              <span class="like-comment to-bind" data-action="likeComment" data-id="{{ comment.id }}">#}
+{#                {% if comment in current_user.liked_comments %}#}
+{#                  <i class="heart icon orange"></i>#}
+{#                {% else %}#}
+{#                  <i class="heart icon"></i>#}
+{#                {% endif %}#}
+{#                <span class="count">{{ comment.liked_users|length }}</span>#}
+{#              </span>#}
+        {# 回复评论 #}
+{#        <span class="reply-comment to-bind-replyInput" data-action="replyComment" data-replyto="{{ comment.id }}">#}
+{#          <i class="comment icon"></i>#}
+{#        </span>#}
+{#            </div>#}
+{#          </div>#}
+{#        </div>#}
       {% endif %}
       </div>
     </div>

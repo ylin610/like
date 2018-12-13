@@ -39,7 +39,6 @@ $(document).ready(function () {
     // ----------绑定点赞、收藏按钮的点击事件----------
     function act() {
         var self = $(this);
-
         let urlMap = {
             likeComment: "/user/action/comment/like",
             likePost: "/user/action/post/like",
@@ -80,10 +79,66 @@ $(document).ready(function () {
         });
     }
 
-    function bind() {
+    function bindAction() {
         $(".to-bind").each(function () {
             this.onclick = act;
             $(this).removeClass("to-bind");
+        });
+    }
+
+    // ----------回复评论----------
+    function reply() {
+        var self = $(this);
+        let content = self.prev().val();
+        let commentId = self.data("commentid");
+        console.log(content);
+
+        $.ajax({
+            type: "GET",
+            url: "/user/reply",
+            data: {
+                comment_id: commentId,
+                content: content
+            },
+            success: function (data) {
+                if (data["code"] === 200) {
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function bindReply() {
+        $(".to-bind-reply").each(function () {
+            this.onclick = reply;
+            $(this).removeClass("to-bind-reply");
+        });
+    }
+
+    function showReplyInput() {
+        var self = $(this);
+        var actionsE = self.parent();
+        var commentId = self.data("replyto");
+
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/reply_input",
+            data: {
+                comment_id: commentId
+            },
+            success: function (data) {
+                if (data["code"] === 200) {
+                    actionsE.after(data["data"]);
+                    bindReply();
+                }
+            }
+        });
+    }
+
+    function bindShowReplyInput() {
+        $(".to-bind-replyInput").each(function () {
+            this.onclick = showReplyInput;
+            $(this).removeClass("to-bind-replyInput");
         });
     }
 
@@ -110,7 +165,8 @@ $(document).ready(function () {
             success: function (res) {
                 $("#stream").append(res["data"]["html"]);
                 flask_moment_render_all();
-                bind();
+                bindAction();
+                bindShowReplyInput();
                 stick();
                 next_page += 1;
                 hasNext = res["data"]["has_next"];
