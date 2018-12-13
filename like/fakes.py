@@ -27,7 +27,7 @@ def fake_users(count=30):
 def fake_follows():
     users = User.query.all()
     for user in users:
-        followers = random.sample(users, k=random.randint(0,10))
+        followers = random.sample(users, k=random.randint(0, 10))
         if user in followers:
             followers.remove(user)
         user.followers = followers
@@ -69,16 +69,16 @@ def fake_comments(count=500):
         comment = Comment(content=''.join(fake.sentences(nb=random.randint(1, 3))),
                           creator=random.choice(users),
                           post=random.choice(posts),
-                          liked_users=random.sample(users, k=random.randint(1,20))
+                          liked_users=random.sample(users, k=random.randint(1, 20))
                           )
         comment.create_time = fake.date_time_this_year(after_now=comment.post.create_time)
-        replies =  random.choice([0,0,0,0,0,1,2,3])
+        replies = random.choice([0, 0, 0, 0, 0, 1, 2, 3])
         for _ in range(replies):
             reply = Comment(content=''.join(fake.sentences(nb=random.randint(1, 3))),
                             creator=random.choice(users),
                             create_time=fake.date_time_this_year(after_now=comment.create_time),
-                            replied=comment
-            )
+                            )
+            reply.replied = comment
         db.session.add(comment)
     db.session.commit()
 
@@ -91,6 +91,8 @@ def fake_discussion(count=40):
                           create_time=fake.date_time_this_year(),
                           participants=random.sample(users, k=random.randint(1, 10))
                           )
+        if disc.creator not in disc.participants:
+            disc.participants.append(disc.creator)
         disc.start_time = fake.date_time_this_year(after_now=disc.create_time)
         for __ in range(random.randint(40, 100)):
             stat = Statement(content=fake.sentence(),

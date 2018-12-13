@@ -52,3 +52,7 @@ class NewPostForm(FlaskForm):
 class NewTopicForm(FlaskForm):
     name = StringField('名称', validators=[DataRequired('请输入话题名称')])
     submit = SubmitField('创建话题')
+
+
+class CommentPostForm(FlaskForm):
+    content = TextAreaField(validators=[DataRequired('请输入评论内容')])

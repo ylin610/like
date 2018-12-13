@@ -75,6 +75,18 @@ def follow():
         return Restful.success('关注成功')
 
 
+@user_bp.route('/comment')
+@login_required
+def comment():
+    post_id = request.args.get('post_id', type=int)
+    content = request.args.get('content')
+    post = Post.query.get(post_id)
+    comment = Comment(content=content, creator=current_user, post=post)
+    db.session.add(comment)
+    db.session.commit()
+    return Restful.success()
+
+
 @user_bp.route('/reply')
 @login_required
 def reply():

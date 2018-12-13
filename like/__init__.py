@@ -1,10 +1,10 @@
 # coding:utf-8
 from flask import Flask
-from like.exts import db, bs, csrf, moment, login, mail
+from like.exts import db, bs, csrf, moment, login, mail, socketio
 import os
 from like.settings import config
 from like.models import Permission, Role, User, Post, Discussion, Topic, Comment
-from like.blueprints import front_bp, api_bp, auth_bp, user_bp
+from like.blueprints import front_bp, api_bp, auth_bp, user_bp, disc_bp
 from like.fakes import *
 import click
 
@@ -29,6 +29,7 @@ def register_blueprints(app):
     app.register_blueprint(api_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(disc_bp)
 
 
 def register_exts(app):
@@ -38,6 +39,7 @@ def register_exts(app):
     moment.init_app(app)
     login.init_app(app)
     mail.init_app(app)
+    socketio.init_app(app)
 
 
 def register_shell_context(app):

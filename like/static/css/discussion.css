@@ -1,0 +1,56 @@
+.lg-content {
+    /*background-color: #0ea432;*/
+}
+
+.sm-content {
+    /*background-color: #0E566C;*/
+}
+
+#discussion-info {
+    height: 100px;
+}
+
+#message-box {
+    padding: 10px;
+    height: 500px;
+}
+
+#message-box, #user-list {
+    background-color: rgba(0,0,0,0.05);
+    border-width: 1px;
+    overflow-y: scroll;
+}
+
+#user-list {
+    padding: 10px 20px;
+    height: 661px;
+}
+
+.stat {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.stat .content {
+    max-width: 50%;
+    background-color: rgba(255,255,255,0.9);
+    margin-left: 6px;
+    padding: 2px 10px;
+}
+
+#message-box, .stat .content {
+    border-width: 1px!important;
+    border-color: rgba(0,0,0,0.2)!important;
+    border: solid;
+    border-radius: 4px;
+}
+
+.from-creator {
+    background-color: #ffcd3c!important;
+}
+
+#input-box {
+    /*height: 100px;*/
+    /*background-color: aqua;*/
+    margin-top: 10px;
+}

@@ -4,6 +4,8 @@ from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from like.utils import get_max
+import hashlib
+from flask import current_app
 
 
 permissions = [
@@ -154,6 +156,15 @@ class User(db.Model, UserMixin):
                                backref=db.backref('followers')
                                )
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._gen_avatar()
+
+    def _gen_avatar(self):
+        m = hashlib.md5()
+        m.update(bytes(self.email, 'utf-8'))
+        self.email_hash = m.hexdigest()
+
     @property
     def password(self):
         raise AttributeError
@@ -187,6 +198,11 @@ class User(db.Model, UserMixin):
     def is_verified(self):
         unverified = Role.query.filter_by(name='UNVERIFIED')
         return unverified is not self.role
+
+    def avatar(self, size=None):
+        if not size:
+            size = current_app.config.get('AVATAR_SIZE', 140)
+        return f'https://www.gravatar.com/avatar/{self.email_hash}?d=identicon&s={size}'
 
 
 class Topic(db.Model):

@@ -15,34 +15,6 @@ body {
     z-index: 999!important;
 }
 
-.main-actions {
-    display: flex !important;
-    justify-content: space-around !important;
-    margin: 0 !important;
-    padding-top: 15px;
-}
-
-.action-item {
-    width: 25%;
-    display: flex!important;
-    flex-direction: column;
-    align-items: center!important;
-    cursor: pointer;
-    color: #35d0ba;
-}
-
-.action-item>a {
-    display: flex!important;
-    flex-direction: column;
-    align-items: center;
-    color: #35d0ba;
-}
-
-.action-item i {
-    display: flex!important;
-    margin: 10px!important;
-}
-
 .nav-container, .page-container {
     margin: auto !important;
     display: flex;
@@ -59,61 +31,13 @@ body {
     margin-right: 10px !important;
 }
 
-.lg-content .card {
-    width: 100%;
-}
-
-.lg-content .ui.card p, .description {
-    font-size: 1em!important;
-    font-weight: bolder;
-    color: rgba(0,0,0,0.8)!important;
-}
-
-.lg-content .header {
-    color: #35d0ba!important;
-}
-
-.actions>span {
-    color: rgba(0,0,0,0.4);
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.actions span:hover {
-    color: rgba(0,0,0,0.6);
-}
 .sm-content {
     width: 296px;
     height: 500px;
 }
 
-.sm-content .ui.card {
-    margin: 0!important;
-    margin-bottom: 10px!important;
-    width: 100%!important;
-}
-
-#topic-card .ui.label {
-    margin: 5px;
-    color: #fefed5;
-    background-color: #ff9234;
-}
-
-#topic-card .ui.label:hover {
-    background-color: #ff9234;
-}
-
 .placeholder {
     display: block;
     height: 66px;
-    width: 100%;
-}
-
-.ui.card > .content .icon {
-    opacity: 1!important;
-}
-
-.reply-input {
-    margin-top: 10px;
     width: 100%;
 }

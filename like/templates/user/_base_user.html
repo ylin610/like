@@ -4,7 +4,7 @@
 
 
 {% block head %}
-{{ render_static('css', 'css/user.css') }}
+{{ render_static('css', 'css/front.css') }}
 {% endblock %}
 
 {% block body %}
@@ -26,5 +26,6 @@
 
 {% block scripts %}
   {{ super() }}
+  {{ render_static('js', 'js/front.js') }}
   {{ render_static('js', 'js/user.js') }}
 {% endblock %}

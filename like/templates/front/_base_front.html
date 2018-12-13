@@ -1,4 +1,9 @@
 {% extends '_base.html' %}
+{% from 'bootstrap/utils.html' import render_static %}
+
+{% block head %}
+  {{ render_static('css', 'css/front.css') }}
+{% endblock %}
 
 {% block body %}
   <div class="page-container">
@@ -7,44 +12,49 @@
       {% endblock %}
     </div>
     <div class="sm-content rail">
-    <div class="ui sticky">
-    <div class="placeholder"></div>
-      {% block sm_content %}
+      <div class="ui sticky">
+        <div class="placeholder"></div>
+        {% block sm_content %}
           <div class="ui card" id="action-card">
-    <div class="content">
-      <div class="center aligned header">立刻开始</div>
-      <div class="ui big horizontal list main-actions">
-        <div class="item action-item">
-          <a href="{{ url_for('front.new_post') }}">
-              <i class="edit icon"></i>
-            <div class="item">动态</div>
-          </a>
-        </div>
-        <div class="item action-item">
-          <a href="{{ url_for('front.new_topic') }}">
-              <i class="hashtag icon"></i>
-            <div class="item">主题</div>
-          </a>
-        </div>
-        <div class="item action-item">
-              <i class="comments icon"></i>
-            <div class="item">讨论</div>
-        </div>
-{#        <div class="item action-item">#}
-{#          <a href="{{ url_for('user.index', user_id=current_user.id) }}">#}
-{#              <i class="home icon"></i>#}
-{#            <div class="item">主页</div>#}
-{#          </a>#}
-{#        </div>#}
-        <div class="item action-item">
-              <i class="cog icon"></i>
-            <div class="item">设置</div>
-        </div>
+            <div class="content">
+              <div class="center aligned header">立刻开始</div>
+              <div class="ui big horizontal list main-actions">
+                <div class="item action-item">
+                  <a href="{{ url_for('front.new_post') }}">
+                    <i class="edit icon"></i>
+                    <div class="item">动态</div>
+                  </a>
+                </div>
+                <div class="item action-item">
+                  <a href="{{ url_for('front.new_topic') }}">
+                    <i class="hashtag icon"></i>
+                    <div class="item">主题</div>
+                  </a>
+                </div>
+                <div class="item action-item">
+                  <i class="comments icon"></i>
+                  <div class="item">讨论</div>
+                </div>
+{#                <div class="item action-item">#}
+{#                  <a href="{{ url_for('user.index', user_id=current_user.id) }}">#}
+{#                    <i class="home icon"></i>#}
+{#                    <div class="item">主页</div>#}
+{#                  </a>#}
+{#                </div>#}
+                <div class="item action-item">
+                  <i class="cog icon"></i>
+                  <div class="item">设置</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endblock %}
       </div>
     </div>
   </div>
-      {% endblock %}
-    </div>
-    </div>
-  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {{ render_static('js', 'js/front.js') }}
 {% endblock %}

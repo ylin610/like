@@ -13,6 +13,9 @@ flask-login = "*"
 bootstrap-flask = "*"
 python-memcached = "*"
 flask-mail = "*"
+python-socketio = "*"
+flask-socketio = "*"
+eventlet = "*"
 
 [dev-packages]
 watchdog = "*"
