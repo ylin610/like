@@ -120,19 +120,25 @@ $(document).ready(function () {
         var actionsE = self.parent();
         var commentId = self.data("replyto");
 
-        $.ajax({
-            type: "GET",
-            url: "/api/v1/reply_input",
-            data: {
-                comment_id: commentId
-            },
-            success: function (data) {
-                if (data["code"] === 200) {
-                    actionsE.after(data["data"]);
-                    bindReply();
+        if (actionsE.hasClass("reply-active")) {
+            var replyE = actionsE.next();
+            replyE.remove();
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "/api/v1/reply_input",
+                data: {
+                    comment_id: commentId
+                },
+                success: function (data) {
+                    if (data["code"] === 200) {
+                        actionsE.after(data["data"]);
+                        bindReply();
+                    }
                 }
-            }
-        });
+            });
+        }
+        actionsE.toggleClass("reply-active");
     }
 
     function bindShowReplyInput() {

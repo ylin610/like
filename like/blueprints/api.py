@@ -74,18 +74,3 @@ def get_reply_input():
     comment = Comment.query.get(comment_id)
     html = render_template('api/reply.html', comment=comment)
     return Restful.success(data=html)
-
-
-# @api_bp.route('/trend')
-# def trend():
-#     user = request.args.get('user_id', type=int)
-#     page = request.args.get('page', 1, type=int)
-#     num = request.args.get('num', current_app.config['COMMENTS_PER_PAGE'], type=int)
-#     start = num * (page - 1)
-#     end = start + num
-#     posts = Post.query.filter_by(creator_id=user).all()
-#     comments = Comment.query.filter_by(creator_id=user).all()
-#     trend = sorted(chain(posts, comments), key=lambda x: x.create_time)
-#     html = render_template('api/trend.html', trends=trend[start:end])
-#     res = {'html': html, 'has_next': len(trend) > end}
-#     return Restful.success(data=res)

@@ -112,3 +112,8 @@ body {
 .ui.card > .content .icon {
     opacity: 1!important;
 }
+
+.reply-input {
+    margin-top: 10px;
+    width: 100%;
+}
