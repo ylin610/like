@@ -20,11 +20,18 @@
   <a href="{{ url_for('front.index') }}" class="item">首页</a>
   <a href="{{ url_for('front.discovery') }}" class="item">发现</a>
     <div class="item">
-    <div class="ui icon input" style="width: 500px;">
-      <input type="text" placeholder="请输入关键字">
-      <i class="search link icon"></i>
+      <form action="/search" method="post">
+        <div class="field">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        </div>
+        <div class="field">
+          <div class="ui icon input">
+            <input name="query" type="text" placeholder="用户、动态……">
+            <i class="search link icon search-btn"></i>
+          </div>
+        </div>
+      </form>
     </div>
-  </div>
     <div class="right menu">
       {% if current_user.is_authenticated %}
         <a class="item" href="{{ url_for('user.index', user_id=current_user.id) }}">{{ current_user.username }}</a>

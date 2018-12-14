@@ -1,5 +1,5 @@
 # coding: utf-8
-from like.exts import db
+from like.exts import db, whooshee
 from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -117,6 +117,7 @@ class Role(db.Model):
             db.session.add(perm)
 
 
+@whooshee.register_model('username', 'bio')
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), nullable=False)
@@ -223,6 +224,7 @@ class Topic(db.Model):
         return get_max(self.posts, num=num, key=lambda x: len(x.liked_users))
 
 
+@whooshee.register_model('content')
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(512), nullable=False)

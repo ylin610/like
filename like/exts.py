@@ -6,6 +6,7 @@ from flask_moment import Moment
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_socketio import SocketIO
+from flask_whooshee import Whooshee
 
 
 db = SQLAlchemy()
@@ -15,6 +16,7 @@ moment = Moment()
 login = LoginManager()
 mail = Mail()
 socketio = SocketIO()
+whooshee = Whooshee()
 
 
 @login.user_loader

@@ -9,7 +9,7 @@ from flask import (
     request
     )
 from like.models import Post, Topic, Comment, User
-from like.forms import NewPostForm, NewTopicForm
+from like.forms import NewPostForm, NewTopicForm, SearchForm
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
 from like.exts import db
@@ -28,7 +28,16 @@ def make_context():
 
 @front_bp.route('/')
 def index():
-    return render_template('front/index.html', stream='post', title='首页')
+    form = SearchForm()
+    return render_template('front/index.html', stream='post', title='首页', form=form)
+
+
+@front_bp.route('/search', methods=['GET', 'POST'])
+def search():
+    query = request.form.get('query', '')
+    users = User.query.whooshee_search(query).limit(8).all()
+    posts = Post.query.whooshee_search(query).limit(8).all()
+    return render_template('front/search.html', users=users, posts=posts)
 
 
 @front_bp.route('/discovery')

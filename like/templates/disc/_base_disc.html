@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% from 'bootstrap/utils.html' import render_static %}
+
+{% block head %}
+  {{ render_static('css', 'css/discussion.css') }}
+{% endblock %}
+
+{% block body %}
+  <div class="page-container">
+    <div class="lg-content">
+      {% block lg_content %}{% endblock %}
+    </div>
+    <div class="sm-content">
+      <div class="placeholder"></div>
+      {% block sm_content %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

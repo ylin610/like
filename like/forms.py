@@ -56,3 +56,7 @@ class NewTopicForm(FlaskForm):
 
 class CommentPostForm(FlaskForm):
     content = TextAreaField(validators=[DataRequired('请输入评论内容')])
+
+
+class SearchForm(FlaskForm):
+    query = StringField()

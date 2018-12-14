@@ -7,27 +7,41 @@ $(document).ready(function () {
     flask_moment_render_all();
     scrollToBottom();
 
+    $("#join-discussion").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/discussion/join",
+            data: {
+                disc_id: disc_id
+            },
+            success: function (data) {
+                if (data["code"] == 200) {
+                    window.location.reload();
+                }
+            }
+        });
+    });
+
     var socket = io();
-    console.log('sending join message');
     socket.emit('join', {
-        disc_id: disc_id,
-        user_id: user_id
+        disc_id: disc_id
     });
 
     $("#stat-btn").click(function () {
-        var content = $(this).prev().val();
+        var inputE = $(this).prev();
+        var content = inputE.val();
+        inputE.val("");
 
-        console.log('sending new message');
         socket.emit("new message", {
-            user_id: user_id,
             disc_id: disc_id,
             content: content
         });
     });
 
     socket.on("new message", function (data) {
-        console.log('recv new message');
-        messageE.append(data["html"]);
-        scrollToBottom();
+        if (data["html"]) {
+            messageE.append(data["html"]);
+            scrollToBottom();
+        }
     });
 });

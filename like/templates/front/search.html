@@ -1,0 +1,30 @@
+{% extends 'front/_base_front.html' %}
+{% from'_macros.html' import render_post_card with context %}
+
+{% block lg_content %}
+  <div class="search-result">
+  <h1>用户：</h1>
+  <div class="ui middle aligned selection list">
+  {% for user in users %}
+      <div class="item">
+        <img class="ui avatar image" src="{{ user.avatar(40) }}">
+      <div class="content">
+        <div class="header">{{ user.username }}</div>
+        <div class="description">{{ user.bio }}</div>
+      </div>
+      </div>
+  {% endfor %}
+
+  </div>
+<div class="search-result">
+  <h1>动态：</h1>
+  <div class="ui middle aligned selection list">
+    {% for post in posts %}
+          {{ render_post_card(post) }}
+    {% endfor %}
+
+  </div>
+</div>
+  </div>
+
+{% endblock %}

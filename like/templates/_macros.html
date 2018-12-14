@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="extra content actions">
-    {# 点赞动态 #}
+      {# 点赞动态 #}
       <span class="left floated like-post to-bind" data-action="likePost" data-id="{{ post.id }}">
         {% if current_user in post.liked_users %}
           <i class="heart icon orange"></i>
@@ -23,23 +23,23 @@
         {% endif %}
         <span class="count">{{ post.liked_users|length }}</span>
       </span>
-    {# 收藏动态 #}
+      {# 收藏动态 #}
       <span class="left floated collect-post to-bind" data-action="collectPost" data-id="{{ post.id }}">
         {% if current_user in post.collected_users %}
           <i class="star icon orange"></i>
         {% else %}
           <i class="star icon"></i>
         {% endif %}
-      <span class="count">{{ post.collected_users|length }}</span>
+        <span class="count">{{ post.collected_users|length }}</span>
       </span>
-    {# 评论 #}
+      {# 评论 #}
       <span class="left floated comment-post" data-action="commentPost" data-id="{{ post.id }}">
         <a href="{{ url_for('front.post', post_id=post.id) }}">
         <i class="comment icon"></i>
         <span class="count">{{ post.comments|length }}条评论</span>
         </a>
       </span>
-    {# 作者 #}
+      {# 作者 #}
       <div class="right floated author">
         <a href="{{ url_for('user.index', user_id=post.creator_id) }}" class="avatar">
           <img src="{{ post.creator.avatar(50) }}">
@@ -110,7 +110,7 @@
                     {% else %}
                       <i class="heart icon"></i>
                     {% endif %}
-                      <span class="count">{{ reply.liked_users|length }}</span>
+                    <span class="count">{{ reply.liked_users|length }}</span>
                   </span>
                 </div>
               </div>
@@ -123,10 +123,10 @@
 {% endmacro %}
 
 {% macro render_user_card(user) %}
-<div class="ui card user-card">
-{#    <div class="image">#}
-{#      <img src="{{ user.avatar(300) }}">#}
-{#    </div>#}
+  <div class="ui card user-card">
+    {#    <div class="image">#}
+    {#      <img src="{{ user.avatar(300) }}">#}
+    {#    </div>#}
     <div class="content">
       <img class="right floated mini ui image" src="{{ user.avatar() }}">
       <div class="header">
@@ -138,16 +138,16 @@
     </div>
     {% if user is not is_current_user %}
       <div class="extra content">
-      {% if user in current_user.followed %}
-        <a class="follow-user" data-id="{{ user.id }}">
-          <i class="heart icon orange"></i>
-          <span class="follow-status">取消关注</span>
-        </a>
+        {% if user in current_user.followed %}
+          <a class="follow-user" data-id="{{ user.id }}">
+            <i class="heart icon orange"></i>
+            <span class="follow-status">取消关注</span>
+          </a>
         {% else %}
-        <a class="follow-user" data-id="{{ user.id }}">
-          <i class="heart icon"></i>
-          <span class="follow-status">关注</span>
-        </a>
+          <a class="follow-user" data-id="{{ user.id }}">
+            <i class="heart icon"></i>
+            <span class="follow-status">关注</span>
+          </a>
         {% endif %}
       </div>
     {% endif %}
@@ -181,23 +181,35 @@
             <div class="label">收藏的动态</div>
           </div>
         </a>
+              <a href="{{ url_for('user.created_disc', user_id=user.id) }}">
+          <div class="statistic">
+            <div class="value">{{ user.created_discussions|length }}</div>
+            <div class="label">创建的讨论组</div>
+          </div>
+        </a>
+              <a href="{{ url_for('user.joined_disc', user_id=user.id) }}">
+          <div class="statistic">
+            <div class="value">{{ user.discussions|length }}</div>
+            <div class="label">加入的讨论组</div>
+          </div>
+        </a>
       </div>
     </div>
   </div>
 {% endmacro %}
 
 {% macro render_stat(stat) %}
-      <div class="stat">
-        <div class="avatar">
-          <img src="{{ stat.creator.avatar(50) }}">
-        </div>
-        {% if stat.creator_id == stat.discussion.creator.id %}
+  <div class="stat">
+    <div class="avatar">
+      <img src="{{ stat.creator.avatar(50) }}">
+    </div>
+    {% if stat.creator_id == stat.discussion.creator.id %}
       <div class="content from-creator">
-          {% else %}
+    {% else %}
       <div class="content">
-        {% endif %}
-        <p><b>{{ stat.creator.username }}</b></p>
-        <p>{{ stat.content }}</p>
-      </div>
-      </div>
+    {% endif %}
+    <p><b>{{ stat.creator.username }}</b></p>
+    <p>{{ stat.content }}</p>
+    </div>
+  </div>
 {% endmacro %}

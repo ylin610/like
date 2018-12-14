@@ -5,7 +5,7 @@ from flask import (
     current_app,
     request
     )
-from like.models import Post, Topic, Comment, User
+from like.models import Post, Topic, Comment, User, Discussion
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
 from like.exts import db
@@ -56,6 +56,22 @@ def followed(user_id):
     user = User.query.get(user_id)
     followed = user.followed
     return render_template('user/followed.html', user=user, followed=followed)
+
+
+@user_bp.route('/<int:user_id>/created_disc')
+@login_required
+def created_disc(user_id):
+    user = User.query.get(user_id)
+    discs = user.created_discussions
+    return render_template('user/discussion.html', user=user, discs=discs, type='创建')
+
+
+@user_bp.route('/<int:user_id>/joined_disc')
+@login_required
+def joined_disc(user_id):
+    user = User.query.get(user_id)
+    discs = user.discussions
+    return render_template('user/discussion.html', user=user, discs=discs, type='加入')
 
 
 @user_bp.route('/follow')

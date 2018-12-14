@@ -1,0 +1,16 @@
+{% extends 'disc/_base_disc.html' %}
+
+{% block lg_content %}
+  <div class="ui link cards">
+    {% for disc in user.discussions %}
+      <div class="card">
+        <div class="content">
+          <a href="{{ url_for('disc.disc_room', disc_id=disc.id) }}">
+            <div class="header">{{ disc.name }}</div>
+            <div class="description">{{ disc.creator }}</div>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

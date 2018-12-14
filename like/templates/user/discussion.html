@@ -1,15 +1,14 @@
 {% extends 'user/_base_user.html' %}
 
-{% block page_title %}{{ user.username }}关注的人{% endblock %}
+{% block page_title %}{{ user.username }}{{ type }}的讨论组{% endblock %}
 
 {% block lg_content %}
   <div class="ui link cards">
-    {% for follow in followed %}
+    {% for disc in discs %}
       <div class="card">
           <div class="content">
-        <a href="{{ url_for('user.index', user_id=follow.id) }}">
-            <div class="header">{{ follow.username }}</div>
-            <div class="description">{{ follow.bio }}</div>
+        <a href="{{ url_for('disc.disc_room', disc_id=disc.id) }}">
+            <div class="header">{{ disc.name }}</div>
         </a>
           </div>
       </div>

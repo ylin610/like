@@ -32,8 +32,10 @@
                   </a>
                 </div>
                 <div class="item action-item">
-                  <i class="comments icon"></i>
-                  <div class="item">讨论</div>
+                  <a href="{{ url_for('user.joined_disc', user_id=current_user.id) }}">
+                    <i class="comments icon"></i>
+                    <div class="item">讨论</div>
+                  </a>
                 </div>
 {#                <div class="item action-item">#}
 {#                  <a href="{{ url_for('user.index', user_id=current_user.id) }}">#}
@@ -41,10 +43,10 @@
 {#                    <div class="item">主页</div>#}
 {#                  </a>#}
 {#                </div>#}
-                <div class="item action-item">
-                  <i class="cog icon"></i>
-                  <div class="item">设置</div>
-                </div>
+{#                <div class="item action-item">#}
+{#                  <i class="cog icon"></i>#}
+{#                  <div class="item">设置</div>#}
+{#                </div>#}
               </div>
             </div>
           </div>

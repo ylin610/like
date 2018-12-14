@@ -21,6 +21,12 @@ body {
     width: 1000px;
 }
 
+.nav-container input {
+    width: 500px;
+    height: 37px;
+    margin: -7.5px 0!important;
+}
+
 .ui.menu .nav-container .item:before {
     width: 0 !important;
 }

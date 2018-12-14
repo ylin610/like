@@ -1,52 +1,53 @@
-{% extends '_base.html' %}
-{% from 'bootstrap/utils.html' import render_static %}
+{% extends 'disc/_base_disc.html' %}
 {% from '_macros.html' import render_stat with context %}
+{% from 'bootstrap/utils.html' import render_static %}
 
 {% block page_title %}{{ disc.name }}{% endblock %}
 
-{% block head %}
-  {{ render_static('css', 'css/discussion.css') }}
-{% endblock %}
-
-{% block body %}
-<div class="page-container">
-  <div class="lg-content">
-    <div class="ui card fluid" id="discussion-info">
-      <div class="content">
-        <div class="header">{{ disc.name }}</div>
-        <div class="meta">
-          <span>{{ disc.creator.username }}</span>
-          <span>创建时间：{{ moment(disc.create_time).fromNow() }}</span>
-        </div>
+{% block lg_content %}
+  <div class="ui card fluid" id="discussion-info">
+    <div class="content">
+      <div class="header">{{ disc.name }}</div>
+      <div class="meta">
+        <span>{{ disc.creator.username }}</span>
+        <span>创建时间：{{ moment(disc.create_time).fromNow() }}</span>
       </div>
     </div>
-    <div id="message-box">
+    {% if current_user not in disc.participants %}
+      <div class="extra content">
+        <button class="ui button small" id="join-discussion">加入讨论</button>
+      </div>
+    {% endif %}
+  </div>
+  <div id="message-box">
+    {% if current_user in disc.participants %}
       {% for stat in disc.statements %}
         {{ render_stat(stat) }}
       {% endfor %}
-    </div>
-      <div class="ui action input fluid" id="input-box">
-  <input type="text" id="stat-input">
-  <button class="ui button" id="stat-btn">发送</button>
-</div>
+    {% endif %}
   </div>
-  <div class="sm-content">
-    <div class="placeholder"></div>
-    <div id="user-list">
-      <div class="ui middle aligned list">
-        {% for user in disc.participants %}
+  <div class="ui action input fluid" id="input-box">
+    <input type="text" id="stat-input">
+    <button class="ui button" id="stat-btn">发送</button>
+  </div>
+{% endblock %}
+
+
+{% block sm_content %}
+  <div id="user-list">
+    <div class="ui middle aligned list">
+      {% for user in disc.participants %}
         <div class="item">
           <img src="{{ user.avatar(40) }}" class="ui avatar image">
-        <div class="content">
-          <div class="header">{{ user.username }}</div>
+          <div class="content">
+            <div class="header">{{ user.username }}</div>
+          </div>
         </div>
-        </div>
-        {% endfor %}
+      {% endfor %}
 
-      </div>
     </div>
   </div>
-</div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -54,7 +55,7 @@
   {{ render_static('js', 'js/socket.io.js') }}
   {{ render_static('js', 'js/discussion.js') }}
   <script>
-  var disc_id = {{ disc.id }};
-  var user_id = {{ current_user.id }};
+      var disc_id = {{ disc.id }};
+      var user_id = {{ current_user.id }};
   </script>
 {% endblock %}

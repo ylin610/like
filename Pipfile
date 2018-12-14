@@ -16,6 +16,7 @@ flask-mail = "*"
 python-socketio = "*"
 flask-socketio = "*"
 eventlet = "*"
+flask-whooshee = "*"
 
 [dev-packages]
 watchdog = "*"

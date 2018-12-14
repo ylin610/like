@@ -28,4 +28,11 @@ function flask_moment_render_all() {
     })
 }
 
+$(document).ready(function () {
+    $(".search-btn").click(function () {
+        var formE = $(this).parent().parent().parent();
+        formE.submit();
+    });
+});
+
 
