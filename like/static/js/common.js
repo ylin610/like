@@ -33,6 +33,14 @@ $(document).ready(function () {
         var formE = $(this).parent().parent().parent();
         formE.submit();
     });
+
+    $.ajax({
+        type: "GET",
+        url: "/api/v1/hot_topics",
+        success: function (data) {
+            $("#hot-topics").append(data);
+        }
+    });
 });
 
 

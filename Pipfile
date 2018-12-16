@@ -17,6 +17,8 @@ python-socketio = "*"
 flask-socketio = "*"
 eventlet = "*"
 flask-whooshee = "*"
+pymysql = "*"
+redis = "*"
 
 [dev-packages]
 watchdog = "*"

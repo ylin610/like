@@ -72,4 +72,16 @@ class Memcached(object):
     @classmethod
     def delete(cls, key):
         return cls.cache.delete(key)
-# coding: utf-8
+
+
+class Redis():
+    import redis
+    cache = redis.Redis()
+
+    @classmethod
+    def incr(cls, disc):
+        return cls.cache.incr(disc)
+
+    @classmethod
+    def decr(cls, disc):
+        return cls.cache.decr(disc)

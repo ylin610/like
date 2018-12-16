@@ -2,14 +2,11 @@
 from flask import (
     Blueprint,
     render_template,
-    jsonify,
-    current_app,
     request
     )
-from like.models import Post, Topic, Comment, User, Discussion, Statement
+from like.models import Discussion, Statement
 from flask_login import login_required, current_user
 from flask_socketio import emit, join_room
-from sqlalchemy.sql.expression import func
 from like.exts import db, socketio
 from like.utils import Restful
 

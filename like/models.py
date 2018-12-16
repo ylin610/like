@@ -7,16 +7,14 @@ from like.utils import get_max
 import hashlib
 from flask import current_app
 
-
 permissions = [
-    'PUBLISH',      # 发布动态
-    'FOLLOW',       # 关注用户、主题
-    'COLLECT',      # 收藏动态、点赞动态或评论
-    'COMMENT',      # 发表评论
-    'DISCUSSION',   # 参与讨论
-    'ADMIN'         # 管理员
+    'PUBLISH',  # 发布动态
+    'FOLLOW',  # 关注用户、主题
+    'COLLECT',  # 收藏动态、点赞动态或评论
+    'COMMENT',  # 发表评论
+    'DISCUSSION',  # 参与讨论
+    'ADMIN'  # 管理员
 ]
-
 
 permission_map = {
     'UNVERIFIED': ['FOLLOW', 'COLLECT'],
@@ -24,48 +22,41 @@ permission_map = {
     'ADMIN': ['FOLLOW', 'COLLECT', 'PUBLISH', 'COMMENT', 'DISCUSSION', 'ADMIN']
 }
 
-
 role_permission = db.Table(
     'role_permission',
     db.Column('role_id', db.Integer, db.ForeignKey('role.id'), primary_key=True),
     db.Column('permission_id', db.Integer, db.ForeignKey('permission.id'), primary_key=True)
-    )
-
+)
 
 user_topic = db.Table(
     'user_topic',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('topic_id', db.Integer, db.ForeignKey('topic.id'), primary_key=True)
-    )
-
+)
 
 user_post_collect = db.Table(
     'user_post_collect',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
-    )
-
+)
 
 user_post_like = db.Table(
     'user_post_like',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
-    )
-
+)
 
 user_discussion = db.Table(
     'user_discussion',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('discussion_id', db.Integer, db.ForeignKey('discussion.id'), primary_key=True)
-    )
-
+)
 
 user_comment_like = db.Table(
     'user_comment_like',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('comment_id', db.Integer, db.ForeignKey('comment.id'), primary_key=True)
-    )
-
+)
 
 follow = db.Table(
     'follow',

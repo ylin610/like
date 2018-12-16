@@ -29,6 +29,10 @@ class LoginForm(FlaskForm):
     password = PasswordField('密码', validators=[DataRequired('密码不能为空')])
     submit = SubmitField('登录')
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.user = None
+
     def validate_password(self, field):
         email = self.email.data
         password = field.data

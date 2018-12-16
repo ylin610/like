@@ -2,12 +2,10 @@
 from flask import (
     Blueprint,
     render_template,
-    current_app,
     request
     )
-from like.models import Post, Topic, Comment, User, Discussion
+from like.models import Post, Topic, Comment, User
 from flask_login import login_required, current_user
-from sqlalchemy.sql.expression import func
 from like.exts import db
 from like.utils import Restful
 

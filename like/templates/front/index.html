@@ -7,16 +7,40 @@
 {% endblock %}
 
 {% block sm_content %}
-  {{ super() }}
-  <div class="ui card" id="topic-card">
+  <div class="ui card" id="action-card">
     <div class="content">
-      <div class="center aligned header">热门话题</div>
-      <div class="description">
-        {% for topic in hot_topics %}
-          <a class="ui large label" href="{{ url_for('front.topic', topic_id=topic.id) }}">
-            {{ topic.name }}
+      <div class="center aligned header">立刻开始</div>
+      <div class="ui big horizontal list main-actions">
+        <div class="item action-item">
+          <a href="{{ url_for('front.new_post') }}">
+            <i class="edit icon"></i>
+            <div class="item">动态</div>
           </a>
-        {% endfor %}
+        </div>
+        <div class="item action-item">
+          <a href="{{ url_for('front.new_topic') }}">
+            <i class="hashtag icon"></i>
+            <div class="item">主题</div>
+          </a>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="item action-item">
+          <a href="{{ url_for('user.joined_disc', user_id=current_user.id) }}">
+            <i class="comments icon"></i>
+            <div class="item">讨论</div>
+          </a>
+        </div>
+        <div class="item action-item">
+          <a href="{{ url_for('user.index', user_id=current_user.id) }}">
+            <i class="home icon"></i>
+            <div class="item">主页</div>
+          </a>
+        </div>
+        {% endif %}
+        {#                <div class="item action-item">#}
+        {#                  <i class="cog icon"></i>#}
+        {#                  <div class="item">设置</div>#}
+        {#                </div>#}
       </div>
     </div>
   </div>

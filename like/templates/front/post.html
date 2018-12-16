@@ -15,67 +15,43 @@
       <div class="description">{{ post.content }}</div>
     </div>
     <div class="extra content actions">
-    {# 点赞动态 #}
+      {# 点赞动态 #}
       <span class="left floated like-post to-bind" data-action="likePost" data-id="{{ post.id }}">
         {% if current_user in post.liked_users %}
-        <i class="like icon orange"></i>
+          <i class="like icon orange"></i>
         {% else %}
-        <i class="like icon"></i>
+          <i class="like icon"></i>
         {% endif %}
-      <span class="count">
+        <span class="count">
         {{ post.liked_users|length }}
       </span>
       </span>
-    {# 收藏动态 #}
+      {# 收藏动态 #}
       <span class="left floated collect-post to-bind" data-action="collectPost" data-id="{{ post.id }}">
         {% if current_user in post.collected_users %}
-        <i class="star icon orange"></i>
+          <i class="star icon orange"></i>
         {% else %}
-        <i class="star icon"></i>
+          <i class="star icon"></i>
         {% endif %}
-      <span class="count">
+        <span class="count">
         {{ post.collected_users|length }}
       </span>
       </span>
     </div>
   </div>
   <div class="ui action input fluid">
-  <input type="text" placeholder="写下你的评论">
-  <button class="ui button" id="comment-post">发表评论</button>
-</div>
+    <input type="text" placeholder="写下你的评论">
+    <button class="ui button" id="comment-post">发表评论</button>
+  </div>
   <div class="ui card" id="post-comments">
     <div class="dividing content">
       <div class="header">热门评论</div>
       <div class="ui comments">
         {% set comment = post.get_hot_comments() %}
-          {% if comment is none %}
-          {% else %}
-            {{ render_comment_card(comment) }}
-{#        <div class="comment" data-id="{{ comment.id }}">#}
-{#          <div class="content">#}
-{#            <a href="#" class="author">{{ comment.creator.username }}</a>#}
-{#            <div class="metadata">#}
-{#              <span class="date">{{ moment(comment.create_time).fromNow() }}</span>#}
-{#            </div>#}
-{#            <div class="text">{{ comment.content }}</div>#}
-{#            <div class="actions">#}
-            {# 点赞评论 #}
-{#              <span class="like-comment to-bind" data-action="likeComment" data-id="{{ comment.id }}">#}
-{#                {% if comment in current_user.liked_comments %}#}
-{#                  <i class="heart icon orange"></i>#}
-{#                {% else %}#}
-{#                  <i class="heart icon"></i>#}
-{#                {% endif %}#}
-{#                <span class="count">{{ comment.liked_users|length }}</span>#}
-{#              </span>#}
-        {# 回复评论 #}
-{#        <span class="reply-comment to-bind-replyInput" data-action="replyComment" data-replyto="{{ comment.id }}">#}
-{#          <i class="comment icon"></i>#}
-{#        </span>#}
-{#            </div>#}
-{#          </div>#}
-{#        </div>#}
-      {% endif %}
+        {% if comment is none %}
+        {% else %}
+          {{ render_comment_card(comment) }}
+        {% endif %}
       </div>
     </div>
     <div class="content">
@@ -90,14 +66,14 @@
   <div class="ui relaxed list">
     <div class="item">
       <a href="{{ url_for('front.new_post', topic=post.topic.id) }}">
-      <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ post.topic.name }}下发表动态
-      </button>
+        <button class="ui button teal fluid large labeled icon"><i class="edit icon"></i>在#{{ post.topic.name }}下发表动态
+        </button>
       </a>
     </div>
     <div class="item">
       <a href="{{ url_for('front.topic', topic_id=(post.topic.id)) }}">
-      <button class="ui button yellow fluid large labeled icon"><i class="hashtag icon"></i>查看#{{ post.topic.name }}的所有动态
-      </button>
+        <button class="ui button yellow fluid large labeled icon"><i class="hashtag icon"></i>查看#{{ post.topic.name }}的所有动态
+        </button>
       </a>
     </div>
   </div>

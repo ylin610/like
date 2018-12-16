@@ -5,25 +5,14 @@ from flask import (
     redirect,
     url_for,
     abort,
-    current_app,
     request
-    )
-from like.models import Post, Topic, Comment, User
+)
+from like.models import Post, Topic, User
 from like.forms import NewPostForm, NewTopicForm, SearchForm
 from flask_login import login_required, current_user
-from sqlalchemy.sql.expression import func
 from like.exts import db
-from like.utils import Restful
-
 
 front_bp = Blueprint('front', __name__)
-
-
-@front_bp.context_processor
-def make_context():
-    hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id) \
-        .order_by(func.count(Post.id).desc()).limit(5)
-    return {'hot_topics': hot_topics}
 
 
 @front_bp.route('/')
@@ -90,7 +79,6 @@ def new_topic():
             return redirect(url_for('user.index', user_id=current_user.id))
         return render_template('front/new_topic.html', form=form)
     abort(401)
-
 
 # @front_bp.route('/topic/like')
 # def like_topic():

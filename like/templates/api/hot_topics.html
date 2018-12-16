@@ -1,0 +1,5 @@
+{% for topic in hot_topics %}
+  <a class="ui large label" href="{{ url_for('front.topic', topic_id=topic.id) }}">
+    {{ topic.name }}
+  </a>
+{% endfor %}

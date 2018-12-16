@@ -11,8 +11,8 @@ body {
 }
 
 .fixed.menu {
-    box-shadow: 0 2px 5px rgba(255,92,34,.4)!important;
-    z-index: 999!important;
+    box-shadow: 0 2px 5px rgba(255, 92, 34, .4) !important;
+    z-index: 999 !important;
 }
 
 .nav-container, .page-container {
@@ -24,7 +24,7 @@ body {
 .nav-container input {
     width: 500px;
     height: 37px;
-    margin: -7.5px 0!important;
+    margin: -7.5px 0 !important;
 }
 
 .ui.menu .nav-container .item:before {

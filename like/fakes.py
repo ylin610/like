@@ -4,7 +4,6 @@ from like.exts import db
 from like.models import User, Topic, Post, Comment, Discussion, Statement
 import random
 
-
 fake = Faker()
 
 
