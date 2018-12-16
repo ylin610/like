@@ -7,9 +7,9 @@ import random
 def generate_captcha(num=6, use_letter=False):
     """generate captcha with numbers and optional letters.
 
-    :param num (int): length of the captcha.
-    :param use_letter (bool): generate captcha with both numbers and letters or not.
-    :return (str): returns the generated captcha.
+    :param num : length of the captcha.
+    :param use_letter : generate captcha with both numbers and letters or not.
+    :return : returns the generated captcha.
     """
     sample = string.digits
     if use_letter:
@@ -20,10 +20,10 @@ def generate_captcha(num=6, use_letter=False):
 def get_max(q, num=1, key=None):
     """get a number of max items from an iterable.
 
-    :param q (iterable): the sample.
-    :param num (int): the number of items to get.
-    :param key (function): a specific function to order the iterable.
-    :return (obj or list or None): a result item when param num is 1,
+    :param q : the sample.
+    :param num : the number of items to get.
+    :param key : a specific function to order the iterable.
+    :return : a result item when param num is 1,
         or a list of result items. Return None if q is empty.
     """
     if len(q) == 0:
@@ -34,7 +34,7 @@ def get_max(q, num=1, key=None):
         return sorted(q, key=key)[0:num]
 
 
-class Restful(object):
+class Restful:
     ok = 200
     unautherror = 401
     paramserror = 400
@@ -57,7 +57,7 @@ class Restful(object):
         return jsonify({'code': cls.servererror, 'message': message, 'data': data})
 
 
-class Memcached(object):
+class Memcached:
     import memcache
     cache = memcache.Client(['127.0.0.1:11211'], debug=True)
 
@@ -72,16 +72,3 @@ class Memcached(object):
     @classmethod
     def delete(cls, key):
         return cls.cache.delete(key)
-
-
-class Redis():
-    import redis
-    cache = redis.Redis()
-
-    @classmethod
-    def incr(cls, disc):
-        return cls.cache.incr(disc)
-
-    @classmethod
-    def decr(cls, disc):
-        return cls.cache.decr(disc)

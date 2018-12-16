@@ -7,7 +7,7 @@ from flask import (
     )
 from like.models import Post, Topic, Comment, User
 from sqlalchemy.sql.expression import func
-from like.utils import Restful
+from like.utils import Restful, Memcached
 from datetime import datetime, timedelta
 
 
@@ -77,6 +77,10 @@ def get_reply_input():
 
 @api_bp.route('/hot_topics')
 def get_hot_topics():
-    hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id) \
-        .order_by(func.count(Post.id).desc()).limit(5)
-    return render_template('api/hot_topics.html', hot_topics=hot_topics)
+    cached_topics = Memcached.get('hot_topics')
+    if cached_topics is None:
+        hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id) \
+            .order_by(func.count(Post.id).desc()).limit(5)
+        cached_topics = render_template('api/hot_topics.html', hot_topics=hot_topics)
+        Memcached.set('hot_topics', cached_topics, 60*5)
+    return cached_topics
