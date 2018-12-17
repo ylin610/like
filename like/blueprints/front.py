@@ -7,10 +7,12 @@ from flask import (
     abort,
     request
 )
-from like.models import Post, Topic, User
+from like.models import Post, Topic, User, follow
 from like.forms import NewPostForm, NewTopicForm, SearchForm
 from flask_login import login_required, current_user
 from like.exts import db
+from sqlalchemy.sql.expression import func, and_
+
 
 front_bp = Blueprint('front', __name__)
 
@@ -18,7 +20,14 @@ front_bp = Blueprint('front', __name__)
 @front_bp.route('/')
 def index():
     form = SearchForm()
-    return render_template('front/index.html', stream='post', title='首页', form=form)
+    possible_know = None
+    if current_user.is_authenticated:
+        possible_know = [(num, User.query.get(user_id)) for num, user_id in get_possible_know(current_user.id)]
+    return render_template('front/index.html',
+                           stream='post',
+                           title='首页',
+                           form=form,
+                           possible_know=possible_know)
 
 
 @front_bp.route('/search', methods=['GET', 'POST'])
@@ -79,6 +88,21 @@ def new_topic():
             return redirect(url_for('user.index', user_id=current_user.id))
         return render_template('front/new_topic.html', form=form)
     abort(401)
+
+
+def get_possible_know(user_id):
+    _ed = follow.c.followed_id
+    _er = follow.c.follower_id
+    count = func.count(_ed)
+    followed_ids = db.session.query(_ed).filter(_er==user_id).subquery()
+
+    pk = db.session.query(count, _er) \
+        .filter(and_(~follow.c.follower_id.in_(followed_ids), _er!=user_id)) \
+        .filter(_ed.in_(followed_ids)) \
+        .group_by(_er) \
+        .order_by(count.desc()).all()
+    return pk[0:6]
+
 
 # @front_bp.route('/topic/like')
 # def like_topic():

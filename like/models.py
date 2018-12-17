@@ -193,7 +193,7 @@ class User(db.Model, UserMixin):
 
     def avatar(self, size=None):
         if not size:
-            size = current_app.config.get('AVATAR_SIZE', 140)
+            size = current_app.config.get('AVATAR_SIZE', 40)
         return f'https://www.gravatar.com/avatar/{self.email_hash}?d=identicon&s={size}'
 
 

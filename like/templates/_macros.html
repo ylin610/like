@@ -42,7 +42,7 @@
       {# 作者 #}
       <div class="right floated author">
         <a href="{{ url_for('user.index', user_id=post.creator_id) }}" class="avatar">
-          <img src="{{ post.creator.avatar(50) }}">
+          <img src="{{ post.creator.avatar() }}">
           {{ post.creator.username }}
         </a>
       </div>
@@ -63,7 +63,7 @@
 {% macro render_comment_card(comment) %}
   <div class="comment" data-id="{{ comment.id }}">
     <a href="{{ url_for('user.index', user_id=comment.creator.id) }}" class="avatar">
-      <img src="{{ comment.creator.avatar(50) }}">
+      <img src="{{ comment.creator.avatar() }}">
     </a>
     <div class="content">
       <a href="{{ url_for('user.index', user_id=comment.creator.id) }}" class="author">
@@ -94,7 +94,7 @@
           {% for reply in comment.ordered_replies %}
             <div class="comment">
               <a href="{{ url_for('user.index', user_id=reply.creator.id) }}" class="avatar">
-                <img src="{{ reply.creator.avatar(50) }}">
+                <img src="{{ reply.creator.avatar() }}">
               </a>
               <div class="content">
                 <a href="#" class="author">{{ reply.creator.username }}</a>

@@ -78,7 +78,7 @@ def get_reply_input():
 @api_bp.route('/hot_topics')
 def get_hot_topics():
     cached_topics = Memcached.get('hot_topics')
-    if cached_topics is None:
+    if not cached_topics:
         hot_topics = Topic.query.join(Topic.posts).group_by(Topic.id) \
             .order_by(func.count(Post.id).desc()).limit(5)
         cached_topics = render_template('api/hot_topics.html', hot_topics=hot_topics)
