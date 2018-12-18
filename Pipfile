@@ -19,6 +19,7 @@ eventlet = "*"
 flask-whooshee = "*"
 pymysql = "*"
 redis = "*"
+celery = "*"
 
 [dev-packages]
 watchdog = "*"

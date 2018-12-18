@@ -1,6 +1,10 @@
 # coding: utf-8
 import os
+from dotenv import load_dotenv
 
+
+env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+load_dotenv(env_path)
 
 root_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 if os.name == 'nt':
@@ -15,6 +19,10 @@ class BaseConfig:
     TEMPLATES_AUTO_RELOAD = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BOOTSTRAP_SERVE_LOCAL = True
+
+    # Celery
+    CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
+    CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 
     # Flask-Mail
     # 邮箱   TLS     SSL

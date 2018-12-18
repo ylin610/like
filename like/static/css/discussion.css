@@ -54,3 +54,8 @@
     /*background-color: aqua;*/
     margin-top: 10px;
 }
+
+#user-list a {
+    display: flex;
+    align-items: center;
+}

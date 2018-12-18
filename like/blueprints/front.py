@@ -90,18 +90,18 @@ def new_topic():
     abort(401)
 
 
-def get_possible_know(user_id):
+def get_possible_know(user_id, num=6):
     _ed = follow.c.followed_id
     _er = follow.c.follower_id
     count = func.count(_ed)
-    followed_ids = db.session.query(_ed).filter(_er==user_id).subquery()
+    followed_id = db.session.query(_ed).filter(_er == user_id).subquery()
 
     pk = db.session.query(count, _er) \
-        .filter(and_(~follow.c.follower_id.in_(followed_ids), _er!=user_id)) \
-        .filter(_ed.in_(followed_ids)) \
-        .group_by(_er) \
-        .order_by(count.desc()).all()
-    return pk[0:6]
+                   .filter(and_(~_er.in_(followed_id), _er != user_id)) \
+                   .filter(_ed.in_(followed_id)) \
+                   .group_by(_er) \
+                   .order_by(count.desc()).all()
+    return pk[0:num]
 
 
 # @front_bp.route('/topic/like')

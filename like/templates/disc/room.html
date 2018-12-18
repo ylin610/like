@@ -38,10 +38,12 @@
     <div class="ui middle aligned list">
       {% for user in disc.participants %}
         <div class="item">
+          <a href="{{ url_for('user.index', user_id=user.id) }}">
           <img src="{{ user.avatar() }}" class="ui avatar image">
           <div class="content">
             <div class="header">{{ user.username }}</div>
           </div>
+          </a>
         </div>
       {% endfor %}
     </div>

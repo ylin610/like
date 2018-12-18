@@ -7,6 +7,7 @@ from like.utils import get_max
 import hashlib
 from flask import current_app
 
+
 permissions = [
     'PUBLISH',  # 发布动态
     'FOLLOW',  # 关注用户、主题

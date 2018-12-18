@@ -5,7 +5,7 @@ from like.forms import SignUpForm, LoginForm
 from like.models import User
 from like.exts import db, mail
 from like.utils import generate_captcha, Memcached, Restful
-from flask_mail import  Message
+from like.tasks import send_email
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -55,7 +55,6 @@ def logout():
 def email_captcha():
     email = request.args.get('email')
     captcha = generate_captcha()
-    message = Message('验证码', recipients=[email], body='验证码为：'+captcha)
-    mail.send(message)
+    send_email.delay('验证码', recipients=[email], body='验证码为：'+captcha)
     Memcached.set(email, captcha)
     return Restful.success()

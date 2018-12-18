@@ -7,7 +7,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_socketio import SocketIO
 from flask_whooshee import Whooshee
-
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 bs = Bootstrap()
@@ -17,6 +17,7 @@ login = LoginManager()
 mail = Mail()
 socketio = SocketIO()
 whooshee = Whooshee()
+migrate = Migrate()
 
 
 @login.user_loader
