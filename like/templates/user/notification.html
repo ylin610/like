@@ -1,0 +1,30 @@
+{% extends 'user/_base_user.html' %}
+
+{% block page_title %}未读通知{% endblock %}
+
+{% block lg_content %}
+  <div class="ui card">
+  <div class="content">
+    <div class="header">未读通知</div>
+    <div class="description">
+      <div class="ui relaxed divided list">
+        {% for message in messages %}
+          <div class="item">
+          <div class="content">{{ message }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ render_static('js', 'js/jquery.min.js') }}
+  {{ render_static('js', 'semantic-ui/semantic.min.js') }}
+  <script>
+  $('.ui.sticky').sticky({
+            context: '#lg-content'
+        });
+  </script>
+{% endblock %}

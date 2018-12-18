@@ -72,3 +72,29 @@ class Memcached:
     @classmethod
     def delete(cls, key):
         return cls.cache.delete(key)
+
+
+class Mongo:
+    import pymongo
+    client = pymongo.MongoClient()
+    coll = client.my_app.notifications
+
+    @classmethod
+    def insert_one(cls, *args, **kwargs):
+        return cls.coll.insert_one(*args, **kwargs)
+
+    @classmethod
+    def update(cls, *args, **kwargs):
+        return cls.coll.update_many(*args, **kwargs)
+
+    @classmethod
+    def aggregate(cls, *args, **kwargs):
+        return cls.coll.aggregate(*args, **kwargs)
+
+    @classmethod
+    def count(cls, *args, **kwargs):
+        return cls.coll.count_documents(*args, **kwargs)
+
+    @classmethod
+    def find(cls, *args, **kwargs):
+        return cls.coll.find(*args, **kwargs)

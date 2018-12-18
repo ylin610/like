@@ -35,6 +35,12 @@
     <div class="right menu">
       {% if current_user.is_authenticated %}
         <a class="item" href="{{ url_for('user.index', user_id=current_user.id) }}">{{ current_user.username }}</a>
+        <a class="item" href="{{ url_for('user.notification') }}">
+          <i class="bell outline icon yellow"></i>
+          {% if unread_count != 0 %}
+            <div class="ui teal label">{{ unread_count }}</div>
+          {% endif %}
+        </a>
         <a class="item" href="{{ url_for('auth.logout') }}"><i class="power off icon yellow"></i></a>
       {% else %}
         <a class="item" href="{{ url_for('auth.sign_up') }}">注册</a>

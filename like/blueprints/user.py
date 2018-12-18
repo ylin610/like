@@ -7,7 +7,7 @@ from flask import (
 from like.models import Post, Topic, Comment, User
 from flask_login import login_required, current_user
 from like.exts import db
-from like.utils import Restful
+from like.utils import Restful, Mongo
 
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
@@ -72,6 +72,16 @@ def joined_disc(user_id):
     return render_template('user/discussion.html', user=user, discs=discs, type='加入')
 
 
+@user_bp.route('/notification')
+@login_required
+def notification():
+    unread = Mongo.find({'user_id': current_user.id, 'is_read': False})
+    messages = [_['message'] for _ in unread]
+    Mongo.update({'user_id': current_user.id, 'is_read': False},
+                 {'$set': {'is_read': True}}
+                 )
+    return render_template('user/notification.html', user=current_user, messages=messages)
+
 @user_bp.route('/follow')
 @login_required
 def follow():
@@ -117,13 +127,27 @@ def reply():
 @user_bp.route('/action/<string:target_type>/<string:action>')
 def act(target_type, action):
     q_map = {
-        'topic': {'like': 'followed_topics'},
+        'topic': {'like': {
+            'q': 'followed_topics',
+            'formatter': '{} 关注了你创建的主题 “{}”'}},
         'post': {
-            'like': 'liked_posts',
-            'collect': 'collected_posts'
+            'like': {
+                'q': 'liked_posts',
+                'formatter': '{} 赞了你的动态 “{}”'
+            },
+            'collect': {
+                'q': 'collected_posts',
+                'formatter': '{} 收藏了你的动态 “{}”'
+            }
         },
-        'comment': {'like': 'liked_comments'},
-        'user': {'like': 'followers'}
+        'comment': {'like': {
+            'q': 'liked_comments',
+            'formatter': '{} 赞了你的评论 “{}”'
+        }},
+        'user': {'like': {
+            'q': 'followers',
+            'formatter': '{} 关注了你{}'
+        }}
     }
 
     model_map = {'topic': Topic, 'post': Post, 'comment': Comment, 'user': User}
@@ -131,7 +155,7 @@ def act(target_type, action):
     if current_user.is_authenticated:
         target_id = request.args.get('id', type=int)
         item = model_map[target_type].query.get(target_id)
-        q = getattr(current_user, q_map[target_type][action])
+        q = getattr(current_user, q_map[target_type][action]['q'])
         if item in q:
             q.remove(item)
             db.session.commit()
@@ -139,6 +163,23 @@ def act(target_type, action):
         else:
             q.append(item)
             db.session.commit()
+            content = ''
+            for _ in ['name', 'content']:
+                try:
+                    content = getattr(item, _)
+                except:
+                    continue
+            if target_type == 'user':
+                user_id = target_id
+            else:
+                user_id = item.creator.id
+            if current_user.id != user_id:
+                message = q_map[target_type][action]['formatter'].format(current_user.username, content)
+                Mongo.insert_one({
+                    'user_id': user_id,
+                    'message': message,
+                    'is_read': False
+                })
             return Restful.success('关注成功')
     else:
         return Restful.unauth_error()

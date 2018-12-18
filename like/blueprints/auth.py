@@ -3,7 +3,7 @@ from flask import Blueprint, redirect, url_for, render_template, request
 from flask_login import current_user, login_user, logout_user, login_required
 from like.forms import SignUpForm, LoginForm
 from like.models import User
-from like.exts import db, mail
+from like.exts import db
 from like.utils import generate_captcha, Memcached, Restful
 from like.tasks import send_email
 

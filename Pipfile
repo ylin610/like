@@ -20,6 +20,7 @@ flask-whooshee = "*"
 pymysql = "*"
 redis = "*"
 celery = "*"
+pymongo = "*"
 
 [dev-packages]
 watchdog = "*"

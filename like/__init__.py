@@ -7,6 +7,8 @@ from like.models import Permission, Role, User, Post, Discussion, Topic, Comment
 from like.blueprints import front_bp, api_bp, auth_bp, user_bp, disc_bp
 from like.fakes import *
 import click
+from like.utils import Mongo
+from flask_login import current_user
 
 
 def create_app(config_type=None):
@@ -20,6 +22,7 @@ def create_app(config_type=None):
     register_exts(app)
     register_shell_context(app)
     register_commands(app)
+    register_app_context(app)
 
     return app
 
@@ -55,6 +58,15 @@ def register_shell_context(app):
                     Topic=Topic,
                     Post=Post,
                     Comment=Comment)
+
+
+def register_app_context(app):
+    @app.context_processor
+    def make_app_template_context():
+        if current_user.is_authenticated:
+            count = Mongo.count({'user_id': current_user.id, 'is_read': False})
+            return {'unread_count': count}
+        return {}
 
 
 def register_commands(app):
