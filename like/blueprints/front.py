@@ -8,7 +8,7 @@ from flask import (
     request
 )
 from like.models import Post, Topic, User, follow
-from like.forms import NewPostForm, NewTopicForm, SearchForm
+from like.forms import NewPostForm, NewTopicForm
 from flask_login import login_required, current_user
 from like.exts import db
 from sqlalchemy.sql.expression import func, and_
@@ -17,24 +17,52 @@ from sqlalchemy.sql.expression import func, and_
 front_bp = Blueprint('front', __name__)
 
 
-@front_bp.route('/')
-def index():
-    form = SearchForm()
+SEARCH_RESULT_NUM = 8
+
+
+@front_bp.context_processor
+def make_context():
     possible_know = None
     if current_user.is_authenticated:
-        possible_know = [(num, User.query.get(user_id)) for num, user_id in get_possible_know(current_user.id)]
+        possible_know = [
+            (num, User.query.get(user_id)) for num, user_id in get_possible_know(current_user.id)
+        ]
+    return {'possible_know': possible_know}
+
+
+def get_possible_know(user_id, num=6):
+    """Get a number of users that the specific user may know.
+
+    :param user_id: The id of the specific user.
+    :param num: The number of result to get.
+    :return: A list of tuples, each tuple contains the count of same followed and
+        the id of result user.
+    """
+    _ed = follow.c.followed_id
+    _er = follow.c.follower_id
+    count = func.count(_ed)
+    followed_id = db.session.query(_ed).filter(_er == user_id).subquery()
+
+    possible_know = db.session.query(count, _er) \
+        .filter(and_(~_er.in_(followed_id), _er != user_id)) \
+        .filter(_ed.in_(followed_id)) \
+        .group_by(_er) \
+        .order_by(count.desc()).all()
+    return possible_know[0:num]
+
+
+@front_bp.route('/')
+def index():
     return render_template('front/index.html',
                            stream='post',
-                           title='首页',
-                           form=form,
-                           possible_know=possible_know)
+                           title='首页')
 
 
 @front_bp.route('/search', methods=['GET', 'POST'])
 def search():
     query = request.form.get('query', '')
-    users = User.query.whooshee_search(query).limit(8).all()
-    posts = Post.query.whooshee_search(query).limit(8).all()
+    users = User.query.whooshee_search(query).limit(SEARCH_RESULT_NUM).all()
+    posts = Post.query.whooshee_search(query).limit(SEARCH_RESULT_NUM).all()
     return render_template('front/search.html', users=users, posts=posts)
 
 
@@ -88,85 +116,3 @@ def new_topic():
             return redirect(url_for('user.index', user_id=current_user.id))
         return render_template('front/new_topic.html', form=form)
     abort(401)
-
-
-def get_possible_know(user_id, num=6):
-    _ed = follow.c.followed_id
-    _er = follow.c.follower_id
-    count = func.count(_ed)
-    followed_id = db.session.query(_ed).filter(_er == user_id).subquery()
-
-    pk = db.session.query(count, _er) \
-                   .filter(and_(~_er.in_(followed_id), _er != user_id)) \
-                   .filter(_ed.in_(followed_id)) \
-                   .group_by(_er) \
-                   .order_by(count.desc()).all()
-    return pk[0:num]
-
-
-# @front_bp.route('/topic/like')
-# def like_topic():
-#     if current_user.is_authenticated:
-#         topic_id = request.args.get('id', type=int)
-#         topic = Topic.query.get(topic_id)
-#         if topic in current_user.followed_topics:
-#             current_user.followed_topics.remove(topic)
-#             db.session.commit()
-#             return Restful.success('取消成功')
-#         else:
-#             current_user.followed_topics.append(topic)
-#             db.session.commit()
-#             return Restful.success('关注成功')
-#     else:
-#         return Restful.unauth_error()
-#
-#
-# @front_bp.route('/comment/like')
-# def like_comment():
-#     if current_user.is_authenticated:
-#         comment_id = request.args.get('id', type=int)
-#         comment = Comment.query.get(comment_id)
-#         if comment in current_user.liked_comments:
-#             current_user.liked_comments.remove(comment)
-#             db.session.commit()
-#             return Restful.success('取消成功')
-#         else:
-#             current_user.liked_comments.append(comment)
-#             db.session.commit()
-#             return Restful.success('点赞成功')
-#     else:
-#         return Restful.unauth_error()
-#
-#
-# @front_bp.route('/post/like')
-# def like_post():
-#     if current_user.is_authenticated:
-#         post_id = request.args.get('id', type=int)
-#         post = Post.query.get(post_id)
-#         if post in current_user.liked_posts:
-#             current_user.liked_posts.remove(post)
-#             db.session.commit()
-#             return Restful.success('取消成功')
-#         else:
-#             current_user.liked_posts.append(post)
-#             db.session.commit()
-#             return Restful.success('点赞成功')
-#     else:
-#         return Restful.unauth_error()
-#
-#
-# @front_bp.route('/post/collect')
-# def collect_post():
-#     if current_user.is_authenticated:
-#         post_id = request.args.get('id', type=int)
-#         post = Post.query.get(post_id)
-#         if post in current_user.collected_posts:
-#             current_user.collected_posts.remove(post)
-#             db.session.commit()
-#             return Restful.success('取消成功')
-#         else:
-#             current_user.collected_posts.append(post)
-#             db.session.commit()
-#             return Restful.success('收藏成功')
-#     else:
-#         return Restful.unauth_error()

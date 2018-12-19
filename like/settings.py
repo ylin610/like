@@ -16,7 +16,9 @@ class BaseConfig:
     SECRET_KEY = os.getenv('SECRET_KEY')
     TEMPLATES_AUTO_RELOAD = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    BOOTSTRAP_SERVE_LOCAL = True
+
+    # Avatar
+    AVARTA_SIZE = 40
 
     # Celery
     CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"

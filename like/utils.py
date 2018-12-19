@@ -5,11 +5,11 @@ import random
 
 
 def generate_captcha(num=6, use_letter=False):
-    """generate captcha with numbers and optional letters.
+    """Generate captcha with numbers and optional letters.
 
-    :param num : length of the captcha.
-    :param use_letter : generate captcha with both numbers and letters or not.
-    :return : returns the generated captcha.
+    :param num : Length of the captcha.
+    :param use_letter : Generate captcha with both numbers and letters or not.
+    :return : The generated captcha.
     """
     sample = string.digits
     if use_letter:
@@ -18,12 +18,12 @@ def generate_captcha(num=6, use_letter=False):
 
 
 def get_max(q, num=1, key=None):
-    """get a number of max items from an iterable.
+    """Get a number of max items from an iterable.
 
-    :param q : the sample.
-    :param num : the number of items to get.
-    :param key : a specific function to order the iterable.
-    :return : a result item when param num is 1,
+    :param q : The sample.
+    :param num : The number of items to get.
+    :param key : A specific function to order the iterable.
+    :return : A result item when param num is 1,
         or a list of result items. Return None if q is empty.
     """
     if len(q) == 0:

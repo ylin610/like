@@ -82,6 +82,7 @@ def notification():
                  )
     return render_template('user/notification.html', user=current_user, messages=messages)
 
+
 @user_bp.route('/follow')
 @login_required
 def follow():
@@ -105,8 +106,8 @@ def comment():
     post_id = request.args.get('post_id', type=int)
     content = request.args.get('content')
     post = Post.query.get(post_id)
-    comment = Comment(content=content, creator=current_user, post=post)
-    db.session.add(comment)
+    new_comment = Comment(content=content, creator=current_user, post=post)
+    db.session.add(new_comment)
     db.session.commit()
     return Restful.success()
 
@@ -117,45 +118,49 @@ def reply():
     comment_id = request.args.get('comment_id')
     content = request.args.get('content')
     to_comment = Comment.query.get(comment_id)
-    comment = Comment(content=content, creator=current_user, replied=to_comment)
-    db.session.add(comment)
+    new_comment = Comment(content=content, creator=current_user, replied=to_comment)
+    db.session.add(new_comment)
     db.session.commit()
     return Restful.success()
 
 
+Q_MAP = {
+    'topic': {
+        'like': {
+            'q': 'followed_topics',
+            'formatter': '{} 关注了你创建的主题 “{}”'}
+    },
+    'post': {
+        'like': {
+            'q': 'liked_posts',
+            'formatter': '{} 赞了你的动态 “{}”'
+        },
+        'collect': {
+            'q': 'collected_posts',
+            'formatter': '{} 收藏了你的动态 “{}”'
+        }
+    },
+    'comment': {
+        'like': {
+            'q': 'liked_comments',
+            'formatter': '{} 赞了你的评论 “{}”'}
+    },
+    'user': {
+        'like': {
+            'q': 'followers',
+            'formatter': '{} 关注了你{}'}
+    }
+}
+MODEL_MAP = {'topic': Topic, 'post': Post, 'comment': Comment, 'user': User}
+
 
 @user_bp.route('/action/<string:target_type>/<string:action>')
 def act(target_type, action):
-    q_map = {
-        'topic': {'like': {
-            'q': 'followed_topics',
-            'formatter': '{} 关注了你创建的主题 “{}”'}},
-        'post': {
-            'like': {
-                'q': 'liked_posts',
-                'formatter': '{} 赞了你的动态 “{}”'
-            },
-            'collect': {
-                'q': 'collected_posts',
-                'formatter': '{} 收藏了你的动态 “{}”'
-            }
-        },
-        'comment': {'like': {
-            'q': 'liked_comments',
-            'formatter': '{} 赞了你的评论 “{}”'
-        }},
-        'user': {'like': {
-            'q': 'followers',
-            'formatter': '{} 关注了你{}'
-        }}
-    }
-
-    model_map = {'topic': Topic, 'post': Post, 'comment': Comment, 'user': User}
-
+    """处理“关注”、“赞”等用户操作"""
     if current_user.is_authenticated:
         target_id = request.args.get('id', type=int)
-        item = model_map[target_type].query.get(target_id)
-        q = getattr(current_user, q_map[target_type][action]['q'])
+        item = MODEL_MAP[target_type].query.get(target_id)
+        q = getattr(current_user, Q_MAP[target_type][action]['q'])
         if item in q:
             q.remove(item)
             db.session.commit()
@@ -163,23 +168,23 @@ def act(target_type, action):
         else:
             q.append(item)
             db.session.commit()
+
+            # 创建通知
             content = ''
             for _ in ['name', 'content']:
-                try:
-                    content = getattr(item, _)
-                except:
-                    continue
-            if target_type == 'user':
+                content = getattr(item, _, content)  # 获取通知内容
+            if target_type == 'user':  # 获取通知目标用户 id
                 user_id = target_id
             else:
                 user_id = item.creator.id
+
             if current_user.id != user_id:
-                message = q_map[target_type][action]['formatter'].format(current_user.username, content)
+                message = Q_MAP[target_type][action]['formatter'].format(current_user.username, content)
                 Mongo.insert_one({
                     'user_id': user_id,
                     'message': message,
                     'is_read': False
                 })
-            return Restful.success('关注成功')
+            return Restful.success('操作成功')
     else:
         return Restful.unauth_error()

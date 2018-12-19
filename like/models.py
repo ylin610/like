@@ -8,7 +8,7 @@ import hashlib
 from flask import current_app
 
 
-permissions = [
+PERMISSIONS = [
     'PUBLISH',  # 发布动态
     'FOLLOW',  # 关注用户、主题
     'COLLECT',  # 收藏动态、点赞动态或评论
@@ -17,7 +17,7 @@ permissions = [
     'ADMIN'  # 管理员
 ]
 
-permission_map = {
+PERMISSION_MAP = {
     'UNVERIFIED': ['FOLLOW', 'COLLECT'],
     'USER': ['FOLLOW', 'COLLECT', 'PUBLISH', 'COMMENT', 'DISCUSSION'],
     'ADMIN': ['FOLLOW', 'COLLECT', 'PUBLISH', 'COMMENT', 'DISCUSSION', 'ADMIN']
@@ -61,8 +61,8 @@ user_comment_like = db.Table(
 
 follow = db.Table(
     'follow',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 )
 
 
@@ -76,7 +76,7 @@ class Permission(db.Model):
 
     @staticmethod
     def init_permission():
-        for permission in permissions:
+        for permission in PERMISSIONS:
             perm = Permission(name=permission)
             db.session.add(perm)
         db.session.commit()
@@ -93,7 +93,7 @@ class Role(db.Model):
 
     @staticmethod
     def init_role():
-        for name, permission_list in permission_map.items():
+        for name, permission_list in PERMISSION_MAP.items():
             role = Role(name=name)
             db.session.add(role)
             for permission in permission_list:
@@ -101,12 +101,12 @@ class Role(db.Model):
                 role.permissions.append(perm)
         db.session.commit()
 
-    def add_permission(self, permission):
-        perm = Permission.query.filter_by(name=permission).first()
-        if perm in self.permissions:
-            raise ValueError(f'角色<{self.name}>已有权限<{permission}>，请勿重复添加！')
-        if perm is None:
-            db.session.add(perm)
+    # def add_permission(self, permission):
+    #     perm = Permission.query.filter_by(name=permission).first()
+    #     if perm in self.permissions:
+    #         raise ValueError(f'角色<{self.name}>已有权限<{permission}>，请勿重复添加！')
+    #     if perm is None:
+    #         db.session.add(perm)
 
 
 @whooshee.register_model('username', 'bio')
@@ -118,7 +118,7 @@ class User(db.Model, UserMixin):
     email_hash = db.Column(db.String(32))
     bio = db.Column(db.String(256))
     create_time = db.Column(db.DateTime, default=datetime.now)
-    is_banned = db.Column(db.Boolean, default=False)
+    # is_banned = db.Column(db.Boolean, default=False)
 
     role_id = db.Column(db.ForeignKey('role.id'))
 
@@ -127,21 +127,20 @@ class User(db.Model, UserMixin):
     followed_topics = db.relationship('Topic',
                                       secondary=user_topic,
                                       back_populates='followers')
-    posts = db.relationship('Post', back_populates='creator')
+    posts = db.relationship('Post', back_populates='creator', cascade='all')
     collected_posts = db.relationship('Post',
                                       secondary=user_post_collect,
                                       back_populates='collected_users')
     liked_posts = db.relationship('Post',
                                   secondary=user_post_like,
                                   back_populates='liked_users')
-    comments = db.relationship('Comment', back_populates='creator')
+    comments = db.relationship('Comment', back_populates='creator', cascade='all')
     liked_comments = db.relationship('Comment',
                                      secondary=user_comment_like,
                                      back_populates='liked_users')
     created_discussions = db.relationship('Discussion', back_populates='creator')
     discussions = db.relationship('Discussion', secondary=user_discussion, back_populates='participants')
-    statements = db.relationship('Statement', back_populates='creator')
-
+    statements = db.relationship('Statement', back_populates='creator', cascade='all')
     followed = db.relationship('User',
                                secondary=follow,
                                primaryjoin=(follow.c.follower_id == id),
@@ -166,6 +165,9 @@ class User(db.Model, UserMixin):
     def password(self, password):
         self.password_ = generate_password_hash(password)
 
+    def check_password(self, password):
+        return check_password_hash(self.password_, password)
+
     def set_role(self, role_name):
         role = Role.query.filter_by(name=role_name).first()
         if role is None:
@@ -174,10 +176,6 @@ class User(db.Model, UserMixin):
             raise ValueError(f'用户<{self.username}>已是角色<{role_name}>，请勿重复设置！')
         else:
             self.role = role
-            db.session.commit()
-
-    def check_password(self, password):
-        return check_password_hash(self.password_, password)
 
     def has_permission(self, *args):
         for permission in args:
@@ -190,7 +188,7 @@ class User(db.Model, UserMixin):
 
     def is_verified(self):
         unverified = Role.query.filter_by(name='UNVERIFIED')
-        return unverified is not self.role
+        return self.role is not unverified
 
     def avatar(self, size=None):
         if not size:
@@ -202,7 +200,7 @@ class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(32), nullable=False, unique=True)
     description = db.Column(db.String(256))
-    create_time = db.Column(db.DateTime, default=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.now, index=True)
 
     creator_id = db.Column(db.ForeignKey('user.id'))
 
@@ -220,7 +218,7 @@ class Topic(db.Model):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(512), nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.now, index=True)
 
     creator_id = db.Column(db.ForeignKey('user.id'))
     topic_id = db.Column(db.ForeignKey('topic.id'))
@@ -233,7 +231,7 @@ class Post(db.Model):
     liked_users = db.relationship('User',
                                   secondary=user_post_like,
                                   back_populates='liked_posts')
-    comments = db.relationship('Comment', back_populates='post')
+    comments = db.relationship('Comment', back_populates='post', cascade='all')
 
     def get_hot_comments(self, num=1):
         return get_max(self.comments, num=num, key=lambda x: len(x.liked_users))
@@ -242,7 +240,7 @@ class Post(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(512), nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.now, index=True)
 
     creator_id = db.Column(db.ForeignKey('user.id'))
     post_id = db.Column(db.ForeignKey('post.id'))
@@ -255,7 +253,7 @@ class Comment(db.Model):
                                   back_populates='liked_comments')
 
     replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
-    replies = db.relationship('Comment', back_populates='replied')
+    replies = db.relationship('Comment', back_populates='replied', cascade='all')
 
     @property
     def ordered_replies(self):
@@ -274,13 +272,13 @@ class Discussion(db.Model):
     participants = db.relationship('User',
                                    secondary=user_discussion,
                                    back_populates='discussions')
-    statements = db.relationship('Statement', back_populates='discussion')
+    statements = db.relationship('Statement', back_populates='discussion', cascade='all')
 
 
 class Statement(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.String(512), nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.now, index=True)
 
     creator_id = db.Column(db.ForeignKey('user.id'))
     discussion_id = db.Column(db.ForeignKey('discussion.id'))

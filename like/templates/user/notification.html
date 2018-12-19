@@ -7,6 +7,7 @@
   <div class="content">
     <div class="header">未读通知</div>
     <div class="description">
+    {% if messages %}
       <div class="ui relaxed divided list">
         {% for message in messages %}
           <div class="item">
@@ -14,6 +15,9 @@
           </div>
         {% endfor %}
       </div>
+    {% else %}
+      <p>没有未读的消息</p>
+    {% endif %}
     </div>
   </div>
   </div>

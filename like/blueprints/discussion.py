@@ -57,6 +57,4 @@ def new_message(data):
         db.session.commit()
         room = f'disc-{disc_id}'
         html = render_template('disc/message.html', stat=stat)
-    else:
-        html = ''
-    emit('new message', {'html':html}, room=room)
+        emit('new message', {'html': html}, room=room)

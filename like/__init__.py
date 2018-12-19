@@ -1,6 +1,6 @@
 # coding:utf-8
 from flask import Flask
-from like.exts import db, bs, csrf, moment, login, mail, socketio, whooshee, migrate
+from like.exts import db, csrf, moment, login, mail, socketio, whooshee, migrate
 import os
 from like.settings import config
 from like.models import Permission, Role, User, Post, Discussion, Topic, Comment
@@ -37,7 +37,6 @@ def register_blueprints(app):
 
 def register_exts(app):
     db.init_app(app)
-    bs.init_app(app)
     csrf.init_app(app)
     moment.init_app(app)
     login.init_app(app)
