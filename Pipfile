@@ -20,11 +20,13 @@ pymysql = "*"
 redis = "*"
 celery = "*"
 pymongo = "*"
+gunicorn = "*"
 
 [dev-packages]
 watchdog = "*"
 v = {version = "*", editable = true}
 faker = "*"
+"flake8" = "*"
 
 [requires]
 python_version = "3.6"

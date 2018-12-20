@@ -18,7 +18,6 @@ PERMISSIONS = [
 ]
 
 PERMISSION_MAP = {
-    'UNVERIFIED': ['FOLLOW', 'COLLECT'],
     'USER': ['FOLLOW', 'COLLECT', 'PUBLISH', 'COMMENT', 'DISCUSSION'],
     'ADMIN': ['FOLLOW', 'COLLECT', 'PUBLISH', 'COMMENT', 'DISCUSSION', 'ADMIN']
 }
@@ -101,24 +100,16 @@ class Role(db.Model):
                 role.permissions.append(perm)
         db.session.commit()
 
-    # def add_permission(self, permission):
-    #     perm = Permission.query.filter_by(name=permission).first()
-    #     if perm in self.permissions:
-    #         raise ValueError(f'角色<{self.name}>已有权限<{permission}>，请勿重复添加！')
-    #     if perm is None:
-    #         db.session.add(perm)
-
 
 @whooshee.register_model('username', 'bio')
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(20), nullable=False)
+    username = db.Column(db.String(32), nullable=False)
     password_ = db.Column(db.String(128))
-    email = db.Column(db.String(32), nullable=False, unique=True)
+    email = db.Column(db.String(128), nullable=False, unique=True)
     email_hash = db.Column(db.String(32))
     bio = db.Column(db.String(256))
     create_time = db.Column(db.DateTime, default=datetime.now)
-    # is_banned = db.Column(db.Boolean, default=False)
 
     role_id = db.Column(db.ForeignKey('role.id'))
 

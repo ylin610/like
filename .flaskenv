@@ -1,3 +1,3 @@
 FLASK_APP = like
-FLASK_ENV = development
+FLASK_ENV = production
 DATABASE_TYPE = mysql

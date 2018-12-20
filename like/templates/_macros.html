@@ -133,7 +133,7 @@
         <span>{{ user.username }}</span>
       </div>
       <div class="description">
-        <span>{{ user.bio }}</span>
+        <span>{{ user.bio or '这个家伙很懒，什么介绍都没写' }}</span>
       </div>
     </div>
     {% if user is not is_current_user %}

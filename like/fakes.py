@@ -10,7 +10,7 @@ fake = Faker()
 def fake_users(count=30):
     admin = User(username='admin', email='admin@test.com', bio=fake.sentence())
     admin.password = '1234'
-    admin.set_role('ADMIN')
+    admin.set_role('USER')
     db.session.add(admin)
     for _ in range(count):
         user = User(username=fake.name(),

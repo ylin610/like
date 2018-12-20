@@ -9,6 +9,8 @@ from like.fakes import *
 import click
 from like.utils import Mongo
 from flask_login import current_user
+import logging
+from logging.handlers import RotatingFileHandler
 
 
 def create_app(config_type=None):
@@ -18,6 +20,7 @@ def create_app(config_type=None):
     app = Flask('like')
     app.config.from_object(config[config_type])
 
+    register_logger(app)
     register_blueprints(app)
     register_exts(app)
     register_shell_context(app)
@@ -25,6 +28,17 @@ def create_app(config_type=None):
     register_app_context(app)
 
     return app
+
+
+def register_logger(app):
+    app.logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(name)s: %(message)s')
+    handler = RotatingFileHandler('logs/like.log', maxBytes=10 * 1024 * 1024, backupCount=10)
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.INFO)
+
+    if not app.debug:
+        app.logger.addHandler(handler)
 
 
 def register_blueprints(app):

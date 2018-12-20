@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import Blueprint, redirect, url_for, render_template, request
+from flask import Blueprint, redirect, url_for, render_template, request, current_app
 from flask_login import current_user, login_user, logout_user, login_required
 from like.forms import SignUpForm, LoginForm
 from like.models import User
@@ -22,7 +22,7 @@ def sign_up():
         password = form.password.data
         user = User(username=username, email=email)
         user.password = password
-        user.set_role('UNVERIFIED')
+        user.set_role('USER')
         db.session.add(user)
         db.session.commit()
         login_user(user)
@@ -39,6 +39,7 @@ def login():
     if form.validate_on_submit():
         user = form.user
         login_user(user)
+        current_app.logger.info(f'User<id: {current_user.id}> logged in.')
         return redirect(url_for('front.index'))
     else:
         return render_template('auth/login.html', form=form)
@@ -47,6 +48,7 @@ def login():
 @auth_bp.route('/logout')
 @login_required
 def logout():
+    current_app.logger.info(f'User<id: {current_user.id}> logged out.')
     logout_user()
     return redirect(url_for('front.index'))
 

@@ -15,6 +15,8 @@ class BaseConfig:
     # basic config
     SECRET_KEY = os.getenv('SECRET_KEY')
     TEMPLATES_AUTO_RELOAD = True
+
+    # Database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Avatar
@@ -53,7 +55,16 @@ class DevelpomentConfig(BaseConfig):
 
 
 class ProductionConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', sqlite3 + os.path.join(root_path, 'data.db'))
+    database_type = os.getenv('DATABASE_TYPE')
+    if database_type == 'mysql':
+        HOSTNAME = '127.0.0.1'
+        PORT = '3306'
+        DATABASE = 'like_app'
+        USERNAME = os.getenv('MYSQL_USERNAME')
+        PASSWORD = os.getenv('MYSQL_PASSWORD')
+        SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}'
+    else:
+        SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', sqlite3 + os.path.join(root_path, 'data.db'))
 
 
 class TestConfig(BaseConfig):
