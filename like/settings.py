@@ -43,7 +43,7 @@ class BaseConfig:
 
 class DevelpomentConfig(BaseConfig):
     database_type = os.getenv('DATABASE_TYPE')
-    if database_type == 'mysql':
+    if database_type == 'MYSQL':
         HOSTNAME = '127.0.0.1'
         PORT = '3306'
         DATABASE = 'test'
@@ -56,7 +56,7 @@ class DevelpomentConfig(BaseConfig):
 
 class ProductionConfig(BaseConfig):
     database_type = os.getenv('DATABASE_TYPE')
-    if database_type == 'mysql':
+    if database_type == 'MYSQL':
         HOSTNAME = '127.0.0.1'
         PORT = '3306'
         DATABASE = 'like_app'
