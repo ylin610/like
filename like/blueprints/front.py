@@ -67,6 +67,7 @@ def search():
 
 
 @front_bp.route('/follow')
+@login_required
 def follow():
     return render_template('front/index.html', stream='follow', title='关注')
 
