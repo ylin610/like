@@ -42,16 +42,16 @@ class BaseConfig:
 
 
 class DevelpomentConfig(BaseConfig):
-    database_type = os.getenv('DATABASE_TYPE')
-    if database_type == 'MYSQL':
-        HOSTNAME = '127.0.0.1'
-        PORT = '3306'
-        DATABASE = 'test'
-        USERNAME = os.getenv('MYSQL_USERNAME')
-        PASSWORD = os.getenv('MYSQL_PASSWORD')
-        SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}'
-    else:
-        SQLALCHEMY_DATABASE_URI = sqlite3 + os.path.join(root_path, 'data_dev.db')
+    # database_type = os.getenv('DATABASE_TYPE')
+    # if database_type == 'MYSQL':
+    #     HOSTNAME = '127.0.0.1'
+    #     PORT = '3306'
+    #     DATABASE = 'test'
+    #     USERNAME = os.getenv('MYSQL_USERNAME')
+    #     PASSWORD = os.getenv('MYSQL_PASSWORD')
+    #     SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}'
+    # else:
+    SQLALCHEMY_DATABASE_URI = sqlite3 + os.path.join(root_path, 'data_dev.db')
 
 
 class ProductionConfig(BaseConfig):
