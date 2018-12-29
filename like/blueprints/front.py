@@ -7,7 +7,7 @@ from flask import (
     abort,
     request
 )
-from like.models import Post, Topic, User, follow
+from like.models import Post, Topic, User, follow as follow_model
 from like.forms import NewPostForm, NewTopicForm
 from flask_login import login_required, current_user
 from like.exts import db
@@ -38,8 +38,8 @@ def get_possible_know(user_id, num=6):
     :return: A list of tuples, each tuple contains the count of same followed and
         the id of result user.
     """
-    _ed = follow.c.followed_id
-    _er = follow.c.follower_id
+    _ed = follow_model.c.followed_id
+    _er = follow_model.c.follower_id
     count = func.count(_ed)
     followed_id = db.session.query(_ed).filter(_er == user_id).subquery()
 
@@ -64,6 +64,11 @@ def search():
     users = User.query.whooshee_search(query).limit(SEARCH_RESULT_NUM).all()
     posts = Post.query.whooshee_search(query).limit(SEARCH_RESULT_NUM).all()
     return render_template('front/search.html', users=users, posts=posts)
+
+
+@front_bp.route('/follow')
+def follow():
+    return render_template('front/index.html', stream='follow', title='关注')
 
 
 @front_bp.route('/discovery')

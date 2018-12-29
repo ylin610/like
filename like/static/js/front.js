@@ -143,7 +143,8 @@ $(document).ready(function () {
         post: "/api/v1/post",
         comment: "/api/v1/comment",
         discovery: "/api/v1/discovery",
-        collection: "/api/v1/collection"
+        collection: "/api/v1/collection",
+        follow: "/api/v1/follow"
     };
     var next_page = 1;
     var hasNext = true;

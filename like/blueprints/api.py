@@ -5,10 +5,12 @@ from flask import (
     current_app,
     request
     )
-from like.models import Post, Topic, Comment, User
-from sqlalchemy.sql.expression import func
+from like.models import Post, Topic, Comment, User, follow as follow_model, user_topic
+from sqlalchemy.sql.expression import func, or_
 from like.utils import Restful, Memcached
 from datetime import datetime, timedelta
+from like.exts import db
+from flask_login import current_user
 
 
 DISCOVER_POSTS_IN_DAYS = 7
@@ -47,6 +49,25 @@ def get_comment():
                          .order_by(Comment.create_time.desc()).paginate(page, num)
 
     html = render_template('api/comment.html', comments=query.items)
+    res = {'html': html, 'has_next': query.has_next}
+    return Restful.success(data=res)
+
+
+@api_bp.route('/follow')
+def follow():
+    page = request.args.get('page', 1, type=int)
+    num = request.args.get('num', current_app.config['COMMENTS_PER_PAGE'], type=int)
+    followed_user_ids = db.session.query(follow_model.c.followed_id) \
+                                  .filter(follow_model.c.follower_id == current_user.id) \
+                                  .subquery()
+    followed_topic_ids = db.session.query(user_topic.c.topic_id) \
+                                  .filter(user_topic.c.user_id == current_user.id) \
+                                  .subquery()
+    query = Post.query.filter(
+        or_(Post.creator_id.in_(followed_user_ids), Post.topic_id.in_(followed_topic_ids))
+    ).order_by(Post.create_time.desc()).paginate(page, num)
+
+    html = render_template('api/post.html', posts=query.items)
     res = {'html': html, 'has_next': query.has_next}
     return Restful.success(data=res)
 
