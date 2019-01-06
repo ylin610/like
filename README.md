@@ -1,4 +1,4 @@
-# 立刻(Like)
+# 立刻 - Like
 
 ## 简介
 
@@ -7,19 +7,25 @@
 ## 如何使用
 
 - 访问 [http:like.stravel.top](http://like.stravel.top)，使用测试帐号（admin@test.com:1234）登录即可；
-- 克隆源码本地运行
+- 克隆源码本地运行。
 
 ## 技术栈
 
 - Flask
     该项目基于的 Python Web 框架。
 - MySql
-    用于存放常规数据。
+    存放常规数据。
 - MongoDB
-    用于存放用户的通知消息。
+    存放用户的通知消息。
 - Memcached
-    用于存放验证码。
+    存放验证码。
 - Celery
-    用于异步发送邮件。
+    异步发送邮件。
 - Redis
-    用于 Celery 的 Broker 和 Backend。
+    Celery 的 Broker 和 Backend。
+- Nginx
+    Web 服务器。
+- Gunicorn
+    WSGI 服务器。
+- Supervisor
+    管理 Gunicorn 进程。

@@ -118,4 +118,4 @@ dmypy.json
 *.db
 .idea
 JK.png
-faker.py
+/whooshee
