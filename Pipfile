@@ -21,6 +21,7 @@ redis = "*"
 celery = "*"
 pymongo = "*"
 gunicorn = "*"
+pyyaml = "==4.2b2"
 
 [dev-packages]
 watchdog = "*"
