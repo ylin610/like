@@ -22,6 +22,7 @@ celery = "*"
 pymongo = "*"
 gunicorn = "*"
 pyyaml = "==4.2b2"
+qiniu = "*"
 
 [dev-packages]
 watchdog = "*"

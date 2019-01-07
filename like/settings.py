@@ -15,6 +15,9 @@ class BaseConfig:
     # basic config
     SECRET_KEY = os.getenv('SECRET_KEY')
     TEMPLATES_AUTO_RELOAD = True
+    POSTS_PER_PAGE = 20
+    COMMENTS_PER_PAGE = 8
+    CDN_DOMAIN = 'http://cdn.stravel.top'
 
     # Database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -37,8 +40,10 @@ class BaseConfig:
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
-    POSTS_PER_PAGE = 20
-    COMMENTS_PER_PAGE = 8
+    # 七牛云
+    QINIU_BUCKET_NAME = os.getenv('QINIU_BUCKET_NAME')
+    QINIU_ACCESS_KEY = os.getenv('QINIU_ACCESS_KEY')
+    QINIU_SECRET_KEY = os.getenv('QINIU_SECRET_KEY')
 
 
 class DevelpomentConfig(BaseConfig):
