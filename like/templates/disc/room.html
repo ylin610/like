@@ -53,7 +53,8 @@
 
 {% block scripts %}
   {{ super() }}
-  {{ render_static('js', 'js/socket.io.js') }}
+  <script type="text/javascript" src="https://cdn.staticfile.org/socket.io/2.2.0/socket.io.js"></script>
+  <script type="text/javascript" src="https://cdn.staticfile.org/socket.io/2.2.0/socket.io.js.map"></script>
   {{ render_static('js', 'js/discussion.js') }}
   <script>
       var disc_id = {{ disc.id }};

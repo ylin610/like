@@ -8,7 +8,7 @@ $.ajaxSetup({
 });
 
 // ----------moment----------
-moment.locale("zh-cn");
+// moment.locale("zh-cn");
 
 function flask_moment_render(elem) {
     $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
