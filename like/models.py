@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from like.utils import get_max
 import hashlib
 from flask import current_app
+from like.tasks import fetch_avatar
 
 
 PERMISSIONS = [
@@ -146,7 +147,11 @@ class User(db.Model, UserMixin):
     def _gen_avatar(self):
         m = hashlib.md5()
         m.update(bytes(self.email, 'utf-8'))
-        self.email_hash = m.hexdigest()
+        email_hash = m.hexdigest()
+        self.email_hash = email_hash
+        size = current_app.config.get('AVATAR_SIZE', 40)
+        url = f'https://www.gravatar.com/avatar/{email_hash}?d=identicon&s={size}'
+        fetch_avatar.delay('image/avatar/'+email_hash+'.jpg', url)
 
     @property
     def password(self):
@@ -155,6 +160,10 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.password_ = generate_password_hash(password)
+
+    @property
+    def avatar(self):
+        return current_app.config['CDN_DOMAIN'] + '/image/avatar/' + self.email_hash + '.jpg'
 
     def check_password(self, password):
         return check_password_hash(self.password_, password)
@@ -180,11 +189,6 @@ class User(db.Model, UserMixin):
     def is_verified(self):
         unverified = Role.query.filter_by(name='UNVERIFIED')
         return self.role is not unverified
-
-    def avatar(self, size=None):
-        if not size:
-            size = current_app.config.get('AVATAR_SIZE', 40)
-        return f'https://www.gravatar.com/avatar/{self.email_hash}?d=identicon&s={size}'
 
 
 class Topic(db.Model):

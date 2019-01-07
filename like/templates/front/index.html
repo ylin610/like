@@ -52,7 +52,7 @@
           <div class="ui middle aligned list">
             {% for num, user in possible_know %}
               <div class="item">
-                <img src="{{ user.avatar() }}" class="ui avatar image">
+                <img src="{{ user.avatar }}" class="ui avatar image">
                 <div class="content">
                   <a href="{{ url_for('user.index', user_id=user.id) }}" class="header">
                     {{ user.username }}
