@@ -15,7 +15,8 @@
 - MySql: 存放常规数据。
 - MongoDB: 存放用户的通知消息。
 - Memcached: 存放验证码。
-- Celery: 异步发送邮件。
+- 七牛云: 储存用户头像。
+- Celery: 异步发送邮件、储存用户头像至七牛云。
 - Redis: Celery 的 Broker 和 Backend。
 - Nginx: Web 服务器。
 - Gunicorn: WSGI 服务器。
