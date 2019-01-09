@@ -1,6 +1,6 @@
 # coding:utf-8
 from flask import Flask
-from like.exts import db, csrf, moment, login, mail, socketio, whooshee, migrate
+from like.exts import db, csrf, moment, login, mail, socketio, whooshee, migrate, qiniu
 import os
 from like.settings import config
 from like.models import Permission, Role, User, Post, Discussion, Topic, Comment
@@ -58,6 +58,7 @@ def register_exts(app):
     socketio.init_app(app)
     whooshee.init_app(app)
     migrate.init_app(app, db)
+    qiniu.init_app(app)
 
 
 def register_shell_context(app):

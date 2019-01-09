@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "91c0a4331f1c29e3ac050ea16c88e34b7f9e67149c4329c82c497ef2520d13c9"
+            "sha256": "4c44991ade77b844c2927c78c85ad998118c941d5fda5095632b9b228c3eef8d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -122,6 +122,14 @@
             ],
             "index": "pypi",
             "version": "==0.6.0"
+        },
+        "flask-qiniustoraging": {
+            "hashes": [
+                "sha256:73bd546e808d80f475d99204b8b0c47c134b3932ae02c4096fd8d973b4e102f2",
+                "sha256:9f93dd1243c0f579d27c1eeec95f7ff82e5887058ef21006c0f93803c8dfaa57"
+            ],
+            "index": "pypi",
+            "version": "==0.1.1"
         },
         "flask-socketio": {
             "hashes": [
@@ -515,14 +523,6 @@
                 "sha256:801e38bd550b943563660a91de8d4b6fa5df60a542be9093f7abf819f86050cc"
             ],
             "version": "==1.2"
-        },
-        "v": {
-            "hashes": [
-                "sha256:605a936bb41413ea696d92acc74dcf1a1eadde03e73b13655591c2b9074b9dd8",
-                "sha256:c2d77319519fc8b48bafd0677a9117d2717d266fa8a7512ad2158a6a40b31c01"
-            ],
-            "index": "pypi",
-            "version": "==4.0.0"
         },
         "watchdog": {
             "hashes": [

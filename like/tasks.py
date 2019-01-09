@@ -1,15 +1,15 @@
 # coding: utf-8
 from flask import Flask
 from celery import Celery
-from like.exts import mail
+from like.exts import mail, qiniu
 from flask_mail import Message
 from like.settings import BaseConfig
-from qiniu import Auth, BucketManager
 
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 mail.init_app(app)
+qiniu.init_app(app)
 
 
 def make_celery(app):
@@ -39,12 +39,7 @@ def send_email(subject, recipients, body):
     mail.send(message)
 
 
-q = Auth(app.config['QINIU_ACCESS_KEY'], app.config['QINIU_SECRET_KEY'])
-bucket = BucketManager(q)
-bucket_name = app.config['QINIU_BUCKET_NAME']
-
-
 @celery.task
 def fetch_avatar(key, url):
-    ret, _ = bucket.fetch(url, bucket_name, key)
+    ret, _ = qiniu.fetch_url(key, url)
     return ret
