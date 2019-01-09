@@ -23,10 +23,10 @@ pymongo = "*"
 gunicorn = "*"
 pyyaml = "==4.2b2"
 qiniu = "*"
+flask-qiniustoraging = "*"
 
 [dev-packages]
 watchdog = "*"
-v = {version = "*", editable = true}
 faker = "*"
 "flake8" = "*"
 

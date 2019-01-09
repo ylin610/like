@@ -7,6 +7,7 @@ from flask_mail import Mail
 from flask_socketio import SocketIO
 from flask_whooshee import Whooshee
 from flask_migrate import Migrate
+from flask_qiniustoraging import Qiniu
 
 
 db = SQLAlchemy()
@@ -17,6 +18,7 @@ mail = Mail()
 socketio = SocketIO()
 whooshee = Whooshee()
 migrate = Migrate()
+qiniu = Qiniu()
 
 
 @login.user_loader

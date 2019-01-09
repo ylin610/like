@@ -12,7 +12,7 @@
 ## 技术栈
 
 - Flask: 该项目基于的 Python Web 框架。
-- MySql: 存放常规数据。
+- MySQL: 存放常规数据。
 - MongoDB: 存放用户的通知消息。
 - Memcached: 存放验证码。
 - 七牛云: 储存用户头像。
