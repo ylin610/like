@@ -10,13 +10,10 @@ class DatabaseTestCase(BaseTestCase):
         super().setUp()
         admin = User(username='admin', email='test@test.com')
         admin.set_role('ADMIN')
-        unverified_user = User(username='unverified', email='unverified@test.com')
-        unverified_user.set_role('UNVERIFIED')
         topic = Topic(name='test_topic')
         topic.creator = admin
         discussion = Discussion(name='test_discussion', creator=admin)
         self.admin = admin
-        self.unverified_user = unverified_user
         self.topic = topic
         self.discussion = discussion
 
@@ -40,12 +37,12 @@ class DatabaseTestCase(BaseTestCase):
             self.stats.append(stat)
             db.session.add(user)
 
-        db.session.add_all([admin, unverified_user])
+        db.session.add(admin)
         db.session.commit()
 
     def test_existence(self):
         self.assertEqual(1, len(User.query.filter_by(username='admin').all()))
-        self.assertEqual(5, len(User.query.all()))
+        self.assertEqual(4, len(User.query.all()))
         self.assertEqual(1, len(Topic.query.all()))
         self.assertEqual(1, len(Discussion.query.all()))
         self.assertEqual(3, len(Post.query.all()))
@@ -56,9 +53,6 @@ class DatabaseTestCase(BaseTestCase):
         self.assertEqual('ADMIN', self.admin.role.name)
         self.assertTrue(self.admin.has_permission('ADMIN'))
         self.assertRaises(ValueError, self.admin.set_role, 'ADMIN')
-
-    def test_unverified(self):
-        self.assertFalse(self.unverified_user.has_permission('COMMENT'))
 
     def test_topic(self):
         self.assertEqual(self.topic.creator, self.admin)
